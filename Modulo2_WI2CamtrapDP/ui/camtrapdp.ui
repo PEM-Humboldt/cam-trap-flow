@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CamtrapDPTab</class>
+ <widget class="QWidget" name="CamtrapDPTab">
+  <property name="windowTitle">
+   <string>CamtrapDP - Módulo 2</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+
+   <!-- A. Entrada -->
+   <item>
+    <widget class="QGroupBox" name="groupInput">
+     <property name="title"><string>Entrada</string></property>
+     <layout class="QGridLayout" name="gridInput">
+      <item row="0" column="0"><widget class="QLabel" name="lblZip"><property name="text"><string>ZIP de Wildlife Insights:</string></property></widget></item>
+      <item row="0" column="1"><widget class="QLineEdit" name="leZip"><property name="readOnly"><bool>true</bool></property></widget></item>
+      <item row="0" column="2"><widget class="QPushButton" name="btnZip"><property name="text"><string>Seleccionar…</string></property></widget></item>
+
+      <item row="1" column="0"><widget class="QLabel" name="lblOut"><property name="text"><string>Carpeta de salida:</string></property></widget></item>
+      <item row="1" column="1"><widget class="QLineEdit" name="leOut"><property name="readOnly"><bool>true</bool></property></widget></item>
+      <item row="1" column="2"><widget class="QPushButton" name="btnOut"><property name="text"><string>Elegir…</string></property></widget></item>
+
+      <item row="2" column="0"><widget class="QLabel" name="lblTZ"><property name="text"><string>Zona horaria base:</string></property></widget></item>
+      <item row="2" column="1"><widget class="QComboBox" name="cbTimezone"/></item>
+      <item row="2" column="2"><spacer name="sp1"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- B. Opciones -->
+   <item>
+    <widget class="QGroupBox" name="groupOptions">
+     <property name="title"><string>Opciones</string></property>
+     <layout class="QGridLayout" name="gridOptions">
+      <item row="0" column="0"><widget class="QCheckBox" name="chkValidate"><property name="text"><string>Validar con Frictionless</string></property></widget></item>
+      <item row="0" column="1"><widget class="QCheckBox" name="chkMakeZip"><property name="text"><string>Generar ZIP final Camtrap-DP</string></property></widget></item>
+      <item row="0" column="2"><widget class="QCheckBox" name="chkSaveLog"><property name="text"><string>Guardar log de ejecución</string></property></widget></item>
+      <item row="1" column="0"><widget class="QCheckBox" name="chkOpenFolder"><property name="text"><string>Abrir carpeta al terminar</string></property></widget></item>
+      <item row="1" column="1"><widget class="QCheckBox" name="chkOverwrite"><property name="text"><string>Sobrescribir si existe</string></property></widget></item>
+      <item row="1" column="2"><spacer name="sp2"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- C. Ejecución -->
+   <item>
+    <widget class="QGroupBox" name="groupRun">
+     <property name="title"><string>Ejecución</string></property>
+     <layout class="QGridLayout" name="gridRun">
+
+      <item row="0" column="0">
+       <widget class="QPushButton" name="btnProcess">
+        <property name="text"><string>Procesar</string></property>
+        <property name="minimumHeight"><number>36</number></property>
+       </widget>
+      </item>
+
+      <item row="0" column="1">
+       <widget class="QPushButton" name="btnClear">
+        <property name="text"><string>Limpiar</string></property>
+        <property name="minimumHeight"><number>36</number></property>
+       </widget>
+      </item>
+
+      <item row="1" column="0" colspan="2">
+       <widget class="QProgressBar" name="progressBar">
+        <property name="value"><number>0</number></property>
+        <property name="textVisible"><bool>true</bool></property>
+       </widget>
+      </item>
+
+      <item row="2" column="0"><widget class="QLabel" name="lblStatusLabel"><property name="text"><string>Estado:</string></property></widget></item>
+      <item row="2" column="1"><widget class="QLabel" name="lblStatus"><property name="text"><string>-</string></property></widget></item>
+
+     </layout>
+    </widget>
+   </item>
+
+
+   <!-- D. Resultados -->
+   <item>
+    <widget class="QGroupBox" name="groupResults">
+     <property name="title"><string>Resultados</string></property>
+     <layout class="QGridLayout" name="gridResults">
+      <item row="0" column="0"><widget class="QLabel" name="lblDep"><property name="text"><string>deployments.csv:</string></property></widget></item>
+      <item row="0" column="1"><widget class="QLabel" name="lblDeploymentsPath"><property name="text"><string></string></property></widget></item>
+
+      <item row="1" column="0"><widget class="QLabel" name="lblMed"><property name="text"><string>media.csv:</string></property></widget></item>
+      <item row="1" column="1"><widget class="QLabel" name="lblMediaPath"><property name="text"><string></string></property></widget></item>
+
+      <item row="2" column="0"><widget class="QLabel" name="lblObs"><property name="text"><string>observations.csv:</string></property></widget></item>
+      <item row="2" column="1"><widget class="QLabel" name="lblObservationsPath"><property name="text"><string></string></property></widget></item>
+
+      <item row="3" column="0"><widget class="QLabel" name="lblDP"><property name="text"><string>datapackage.json:</string></property></widget></item>
+      <item row="3" column="1"><widget class="QLabel" name="lblDatapackagePath"><property name="text"><string></string></property></widget></item>
+
+      <item row="4" column="0"><widget class="QLabel" name="lblZip"><property name="text"><string>ZIP final:</string></property></widget></item>
+      <item row="4" column="1"><widget class="QLabel" name="lblZipPath"><property name="text"><string></string></property></widget></item>
+
+      <item row="5" column="0"><widget class="QLabel" name="lblLog"><property name="text"><string>Log:</string></property></widget></item>
+      <item row="5" column="1"><widget class="QLabel" name="lblLogPath"><property name="text"><string></string></property></widget></item>
+
+      <item row="6" column="0"><widget class="QLabel" name="lblVal"><property name="text"><string>Validación:</string></property></widget></item>
+      <item row="6" column="1"><widget class="QLabel" name="lblValidateResult"><property name="text"><string></string></property></widget></item>
+
+      <item row="7" column="0"><widget class="QPushButton" name="btnOpenOut"><property name="text"><string>Abrir carpeta salida</string></property></widget></item>
+      <item row="7" column="1"><widget class="QPushButton" name="btnOpenDatapackage"><property name="text"><string>Ver datapackage.json</string></property></widget></item>
+      <item row="7" column="2"><widget class="QPushButton" name="btnOpenLog"><property name="text"><string>Ver log</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- E. Log -->
+   <item>
+    <widget class="QGroupBox" name="groupLog">
+     <property name="title"><string>Log</string></property>
+     <layout class="QVBoxLayout" name="vlog">
+      <item><widget class="QPlainTextEdit" name="logConsole"><property name="readOnly"><bool>true</bool></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

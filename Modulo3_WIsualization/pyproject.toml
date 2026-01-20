@@ -1,0 +1,15 @@
+[build-system]
+requires = ['setuptools>=68','wheel']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'humboldt-viz'
+version = '0.1.0'
+description = 'Visualization module for camera-trap data (Humboldt)'
+requires-python = '>=3.12'
+dependencies = [
+  'PyQt5>=5.15',
+  'pandas>=2.0',
+  'matplotlib>=3.8',
+  'scipy>=1.11',
+]

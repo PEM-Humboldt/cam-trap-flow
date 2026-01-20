@@ -1,0 +1,18 @@
+{
+  "durations_ms": {
+    "Img2WI.exe": 18000,
+    "WI2CamtrapDP.exe": 7000,
+    "WIsualization.exe": 30000
+  },
+  "window": {
+    "default_width": 1200,
+    "default_height": 680,
+    "min_width": 1000,
+    "min_height": 600
+  },
+  "logging": {
+    "level": "INFO",
+    "file_enabled": true,
+    "console_enabled": true
+  }
+}

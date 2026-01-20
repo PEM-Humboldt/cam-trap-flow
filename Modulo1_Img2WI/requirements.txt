@@ -1,0 +1,17 @@
+# ==============================================================================
+# DEPENDENCIAS DE IMG2WI - EXTRACTOR DE IMÁGENES PARA CÁMARAS TRAMPA
+# ==============================================================================
+# Instalar con: pip install -r requirements.txt
+
+# Interfaz gráfica
+PyQt5>=5.15.0
+
+# Empaquetado de ejecutable
+pyinstaller>=6.3.0
+
+# Procesamiento de videos de cámaras trampa
+wiutils>=0.1.0
+
+# Nota: FFmpeg no se instala via pip
+# Debe descargarse manualmente (build static x64) y colocarse en app/bin/ffmpeg.exe
+# Descarga: https://www.gyan.dev/ffmpeg/builds/

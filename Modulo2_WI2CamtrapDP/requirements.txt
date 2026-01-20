@@ -1,0 +1,39 @@
+# ==============================================================================
+# WI2CamtrapDP - Dependencias del Proyecto
+# ==============================================================================
+# Autor: Cristian C. Acevedo
+# Organización: Instituto Humboldt - Red OTUS
+# Última actualización: 24 de diciembre de 2025
+# ==============================================================================
+
+# Interfaz Gráfica
+PyQt5>=5.15.9
+
+# Procesamiento de Datos
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Manejo de Fechas y Zonas Horarias
+python-dateutil>=2.8.2
+pytz>=2023.3
+
+# Validación de Data Packages (Camtrap-DP)
+frictionless>=5.14.0
+
+# Utilidades de Red y Parsing
+requests>=2.31.0
+tatsu>=5.8.0
+
+# ==============================================================================
+# Notas de Instalación:
+# ==============================================================================
+# 1. Para instalar todas las dependencias:
+#    pip install -r requirements.txt
+#
+# 2. Para actualizar dependencias existentes:
+#    pip install --upgrade -r requirements.txt
+#
+# 3. Para crear un ejecutable con PyInstaller:
+#    pip install pyinstaller
+#    pyinstaller camtrapdp.spec --clean
+# ==============================================================================

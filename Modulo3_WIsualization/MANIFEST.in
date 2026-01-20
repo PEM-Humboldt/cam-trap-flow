@@ -1,0 +1,19 @@
+# MANIFEST.in - Especifica archivos adicionales para incluir en el paquete
+
+# Incluir archivos de documentación
+include README.md
+include LICENSE
+
+# Incluir archivos de configuración
+include requirements.txt
+include pyproject.toml
+include build.spec
+
+# Incluir todos los recursos de la aplicación
+recursive-include src/humboldt_viz/resources *
+
+# Excluir archivos innecesarios
+global-exclude __pycache__
+global-exclude *.py[cod]
+global-exclude *.so
+global-exclude .DS_Store

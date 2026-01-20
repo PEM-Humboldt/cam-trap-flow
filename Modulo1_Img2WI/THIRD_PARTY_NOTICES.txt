@@ -1,0 +1,1 @@
+Este proyecto redistribuye FFmpeg (https://ffmpeg.org). Incluye avisos/licencias segun su distribucion.
