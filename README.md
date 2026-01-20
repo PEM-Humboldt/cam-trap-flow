@@ -15,8 +15,6 @@
 - [Arquitectura](#-arquitectura-general)
 - [Flujo de trabajo](#-flujo-de-trabajo-típico)
 - [Requisitos](#-requisitos)
-- [Instalación](#-instalación)
-- [Uso rápido](#-uso-rápido)
 - [Documentación](#-documentación)
 - [Política de datos](#-política-de-datos)
 - [Alcance institucional](#-alcance-institucional)
@@ -140,65 +138,6 @@ graph LR
 
 ---
 
-## 💻 Instalación
-
-### Opción 1: Usuario final (ejecutables)
-
-1. Descarga el ejecutable del **CamTrapFlow Launcher** desde [Releases]()
-2. Ejecuta el instalador o descomprime el archivo ZIP
-3. Abre `CamTrapFlowLauncher.exe`
-4. Sigue las instrucciones en pantalla
-
-### Opción 2: Desarrollador (desde código fuente)
-
-```bash
-# Clonar el repositorio
-git clone https://github.com/tu-organizacion/CamTrapFlow.git
-cd CamTrapFlow
-
-# Navegar a cada módulo e instalar dependencias
-cd Modulo1_Img2WI
-pip install -r requirements.txt
-
-cd ../Modulo2_WI2CamtrapDP
-pip install -r requirements.txt
-
-cd ../Modulo3_WIsualization
-pip install -r requirements.txt
-
-cd ../Launcher
-pip install -r requirements.txt
-```
-
----
-
-## 🚀 Uso rápido
-
-### Mediante Launcher (recomendado)
-
-1. Abre **CamTrapFlow Launcher**
-2. Selecciona el módulo que necesitas
-3. Sigue el asistente gráfico
-4. Revisa los resultados en la carpeta de salida
-
-### Mediante línea de comandos (avanzado)
-
-```bash
-# Módulo 1: Convertir videos a imágenes
-cd Modulo1_Img2WI
-python main.py --input ./videos --output ./images
-
-# Módulo 2: Convertir Wildlife Insights a Camtrap-DP
-cd Modulo2_WI2CamtrapDP
-python convert.py --input ./wi_export --output ./camtrap_dp
-
-# Módulo 3: Análisis y visualización
-cd Modulo3_WIsualization
-python app.py
-```
-
----
-
 ## 📚 Documentación
 
 Para la documentación completa de cada componente consulte:
@@ -230,13 +169,6 @@ Cada módulo indica en su `README`:
 - ✅ Dónde deben ubicarse los datos de entrada
 - ✅ Qué carpetas se usan para salidas locales
 - ✅ Qué información no debe subirse a Git
-
-### Esto garantiza:
-
-- 🔒 Seguridad de la información
-- ✅ Cumplimiento de buenas prácticas de ingeniería
-- 📦 Repositorio liviano y mantenible
-- 🚀 Tiempos de clonado y actualización óptimos
 
 ---
 
@@ -293,16 +225,6 @@ Desarrollo de Software CamTrapFlow (CTF) y Dashboards
 ## 📄 Licencia
 
 Este proyecto se distribuye bajo la licencia definida en el archivo [LICENSE](LICENSE).
-
----
-
-## 📧 Contacto
-
-Para preguntas, sugerencias o reportar problemas:
-
-- **Issues:** [GitHub Issues]()
-- **Email:** [correo@humboldt.org.co]()
-- **Web:** [Instituto Humboldt](http://www.humboldt.org.co/)
 
 ---
 
