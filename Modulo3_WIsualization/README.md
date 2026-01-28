@@ -110,23 +110,40 @@ El ejecutable se generará en la carpeta `dist/HumboldtViz/`:
 - **matplotlib** (≥3.8): Visualización de gráficos
 - **scipy** (≥1.11): Análisis estadístico
 
+## 🤝 Contribuciones
+
+Este proyecto es parte del desarrollo de software para el Instituto Humboldt - Contrato 25_064.
+
+---
+
+# 👥 Autoría
+
+**Desarrollo principal:**  
+Cristian C. Acevedo
+
+**Coordinación científica:**  
+Angélica Diaz-Pulido
+
+**Institución:**  
+Instituto de Investigación de Recursos Biológicos Alexander von Humboldt – Red OTUS
+
+**Proyecto:**  
+Contrato 25-064 
+Desarrollo de Software CamTrapFlow (CTF) y Dashboards
+
+**Año:** 2025
+
+---
+## 📚 Cómo Citar
+
+Si utilizas esta herramienta en tu investigación, por favor cítala como:
+
+Acevedo, C. C., & Diaz-Pulido, A. (2025). *CamTrapFlow (CTF) - Suite integrada para el procesamiento, estandarización y análisis de datos de fototrampe (v1.0.0)* [Software]. Red OTUS, Instituto de Investigación de Recursos Biológicos Alexander von Humboldt. https://github.com/PEM-Humboldt/cam-trap-flow
+
+
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
-
-## 👥 Autor
-
-Desarrollado para el **Instituto de Investigación de Recursos Biológicos Alexander von Humboldt**  
-Proyecto: Contrato 25-064 - Producto 8: Desarrollo Software CTF y Dashboards
-
-## 🤝 Contribución
-
-Las contribuciones son bienvenidas. Por favor:
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
 
 ---
 

@@ -230,21 +230,35 @@ Modulo1_Img2WI/
 
 Este proyecto es parte del desarrollo de software para el Instituto Humboldt - Contrato 25_064.
 
+---
+
+# 👥 Autoría
+
+**Desarrollo principal:**  
+Cristian C. Acevedo
+
+**Coordinación científica:**  
+Angélica Diaz-Pulido
+
+**Institución:**  
+Instituto de Investigación de Recursos Biológicos Alexander von Humboldt – Red OTUS
+
+**Proyecto:**  
+Contrato 25-064 
+Desarrollo de Software CamTrapFlow (CTF) y Dashboards
+
+**Año:** 2025
+
+---
+## 📚 Cómo Citar
+
+Si utilizas esta herramienta en tu investigación, por favor cítala como:
+
+Acevedo, C. C., & Diaz-Pulido, A. (2025). *CamTrapFlow (CTF) - Suite integrada para el procesamiento, estandarización y análisis de datos de fototrampe (v1.0.0)* [Software]. Red OTUS, Instituto de Investigación de Recursos Biológicos Alexander von Humboldt. https://github.com/PEM-Humboldt/cam-trap-flow
+
 ## 📄 Licencia
 
 Ver archivo `THIRD_PARTY_NOTICES.txt` para información sobre licencias de componentes de terceros.
-
-## 👥 Autor y Créditos
-
-**Desarrollado por:** Cristian C. Acevedo  
-**Organización:** Instituto de Investigación de Recursos Biológicos Alexander von Humboldt - Red OTUS  
-**Proyecto:** Producto 8 - Desarrollo de Software CTF (CamTrapFlow) y Dashboards  
-**Contrato:** 25_064  
-**Año:** 2025  
-
-### 📚 Cómo Citar
-
-Acevedo, C. C., & Diaz-Pulido, A. (2025). *Img2WI - Extractor de Imágenes para Cámaras Trampa (v1.0.0)* [Software]. Red OTUS, Instituto de Investigación de Recursos Biológicos Alexander von Humboldt. https://github.com/[usuario]/[repositorio]
 
 ---
 

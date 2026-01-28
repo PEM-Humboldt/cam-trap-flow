@@ -18,10 +18,9 @@
 - [Documentación](#-documentación)
 - [Política de datos](#-política-de-datos)
 - [Alcance institucional](#-alcance-institucional)
-- [Contribución](#-contribución)
 - [Autoría](#-autoría)
+- [Cómo Citar](#-cómo-citar)
 - [Licencia](#-licencia)
-- [Contacto](#-contacto)
 
 ---
 
@@ -129,7 +128,7 @@ graph LR
 
 ### Para desarrollo
 
-- **Python:** 3.8+ (Img2WI y WI2CamtrapDP) | 3.12+ (WIsualization)
+- **Python:** 3.10+ (Img2WI y WI2CamtrapDP) | 3.12+ (WIsualization)
 - **Git:** Para control de versiones
 - **IDE recomendado:** VS Code, PyCharm o similar
 - **Dependencias:** Ver `requirements.txt` en cada módulo
@@ -184,26 +183,13 @@ CamTrapFlow constituye una plataforma técnica diseñada para:
 
 ---
 
-## 🤝 Contribución
+## 🤝 Contribuciones
 
-Las contribuciones son bienvenidas. Para contribuir:
-
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-### Guías de contribución
-
-- Sigue las convenciones de código de Python (PEP 8)
-- Documenta todas las funciones públicas
-- Añade tests para nuevas funcionalidades
-- Actualiza la documentación según sea necesario
+Este proyecto es parte del desarrollo de software para el Instituto Humboldt - Contrato 25_064.
 
 ---
 
-## 👥 Autoría
+# 👥 Autoría
 
 **Desarrollo principal:**  
 Cristian C. Acevedo
@@ -221,6 +207,12 @@ Desarrollo de Software CamTrapFlow (CTF) y Dashboards
 **Año:** 2025
 
 ---
+## 📚 Cómo Citar
+
+Si utilizas esta herramienta en tu investigación, por favor cítala como:
+
+Acevedo, C. C., & Diaz-Pulido, A. (2025). *CamTrapFlow (CTF) - Suite integrada para el procesamiento, estandarización y análisis de datos de fototrampe (v1.0.0)* [Software]. Red OTUS, Instituto de Investigación de Recursos Biológicos Alexander von Humboldt. https://github.com/PEM-Humboldt/cam-trap-flow
+
 
 ## 📄 Licencia
 

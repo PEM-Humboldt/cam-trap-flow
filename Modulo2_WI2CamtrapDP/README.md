@@ -314,18 +314,29 @@ timestamp: "2023-05-15T19:23:11Z"  # +5 horas a UTC
 
 Desarrollado por el **Instituto de Investigación de Recursos Biológicos Alexander von Humboldt** en el marco del proyecto de gestión de datos de fototrampeo para la Red OTUS.
 
-### Colaboradores:
-- **Cristian C. Acevedo** - Desarrollo principal
-- **Angélica Diaz-Pulido** - Coordinación científica
+## 👥 Autoría
 
-### Cómo Contribuir:
-1. Fork el repositorio
-2. Crea una rama para tu funcionalidad (`git checkout -b feature/nueva-caracteristica`)
-3. Commit tus cambios (`git commit -m 'Añadir nueva característica'`)
-4. Push a la rama (`git push origin feature/nueva-caracteristica`)
-5. Abre un Pull Request
+**Desarrollo principal:**  
+Cristian C. Acevedo
 
-Ver [CONTRIBUTING.md](CONTRIBUTING.md) para más detalles.
+**Coordinación científica:**  
+Angélica Diaz-Pulido
+
+**Institución:**  
+Instituto de Investigación de Recursos Biológicos Alexander von Humboldt – Red OTUS
+
+**Proyecto:**  
+Contrato 25-064 
+Desarrollo de Software CamTrapFlow (CTF) y Dashboards
+
+**Año:** 2025
+
+---
+## 📚 Cómo Citar
+
+Si utilizas esta herramienta en tu investigación, por favor cítala como:
+
+Acevedo, C. C., & Diaz-Pulido, A. (2025). *CamTrapFlow (CTF) - Suite integrada para el procesamiento, estandarización y análisis de datos de fototrampe (v1.0.0)* [Software]. Red OTUS, Instituto de Investigación de Recursos Biológicos Alexander von Humboldt. https://github.com/PEM-Humboldt/cam-trap-flow
 
 ---
 
@@ -343,23 +354,3 @@ Este proyecto está licenciado bajo la Licencia MIT. Ver el archivo [LICENSE](LI
 - **SIB Colombia:** https://sibcolombia.net/
 - **Instituto Humboldt:** http://www.humboldt.org.co/
 
----
-
-## 📞 Contacto y Soporte
-
-Para preguntas, problemas o sugerencias:
-- **Issues:** [GitHub Issues](https://github.com/tu-usuario/WI2CamtrapDP/issues)
-- **Email:** adiaz@humboldt.org.co
-- **Documentación completa:** [Wiki del proyecto](https://github.com/tu-usuario/WI2CamtrapDP/wiki)
-
----
-
-## 📜 Cómo Citar
-
-Si utilizas esta herramienta en tu investigación, por favor cítala como:
-
-> Acevedo, C. C., & Diaz-Pulido, A. (2025). *WI2CamtrapDP: Wildlife Insights to Camtrap Data Package Converter* (v1.0.0) [Software]. Red OTUS, Instituto de Investigación de Recursos Biológicos Alexander von Humboldt. https://github.com/tu-usuario/WI2CamtrapDP
-
----
-
-**⭐ Si te resulta útil, considera darle una estrella al repositorio!**

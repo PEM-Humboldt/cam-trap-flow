@@ -28,7 +28,7 @@ Módulo: processor.py
 Autor: Cristian C. Acevedo
 Organización: Instituto Humboldt - Red OTUS
 Versión: 1.0.0
-Última actualización: 23 de diciembre de 2025
+Última actualización: 28 de enero de 2026
 """
 
 from __future__ import annotations
@@ -150,9 +150,26 @@ def include_if_any(df: pd.DataFrame, col: str, series_like):
     """
     try:
         s = pd.Series(series_like)
-        # Verificar si todos los valores son nulos o vacíos
-        if s.isna().all() or (s.astype(str).str.strip() == "").all():
+        
+        # Verificar si todos los valores son nulos
+        if s.isna().all():
             return
+        
+        # Para columnas numéricas, si hay al menos un valor no-nulo, agregar
+        if pd.api.types.is_numeric_dtype(s):
+            df[col] = s
+            return
+        
+        # Para columnas de texto, verificar si todos son strings vacíos después de strip
+        # Solo verificar los valores no nulos
+        non_null_values = s[s.notna()]
+        if len(non_null_values) == 0:
+            return
+        
+        # Si todos los valores no-nulos son strings vacíos, no agregar
+        if (non_null_values.astype(str).str.strip() == "").all():
+            return
+        
         df[col] = s
     except Exception:
         # Mejor no romper el flujo por columnas opcionales
@@ -192,7 +209,12 @@ def to_iso_utc(value, tz_hint: str = "America/Bogota"):
             return pd.NA
         
         # Intento de parseo directo
-        dt = pd.to_datetime(s, utc=False, errors="coerce", dayfirst=False)
+        # Wildlife Insights usa formato día/mes/año (internacional)
+        # Intentar primero con formato día/mes/año, luego con formato mes/día/año
+        dt = pd.to_datetime(s, format="%d/%m/%Y %H:%M", utc=False, errors="coerce")
+        if pd.isna(dt):
+            # Si falla, intentar sin especificar formato (pandas inferirá)
+            dt = pd.to_datetime(s, utc=False, errors="coerce", dayfirst=False)
         if pd.isna(dt):
             return pd.NA
         
@@ -307,12 +329,20 @@ def map_capture_method_from_text(txt: str) -> str:
 
 def classify_observation_and_scientific_name(row):
     """
-    Clasifica observationType y scientificName basado en common_name y otros campos taxonómicos.
+    Clasifica observationType y scientificName basado en common_name y campos taxonómicos.
     
-    PRIORIDAD para scientificName:
-    1. scientific_name_norm (genus + species) si están disponibles
-    2. common_name si está disponible
-    3. Cascada taxonómica (order → family → "Animalia")
+    PRIORIDAD CORRECTA para scientificName (cascada taxonómica):
+    1. genus + species (nombre científico completo: "Dasyprocta punctata")
+    2. genus (solo género: "Didelphis")
+    3. family (familia: "Dasyproctidae")
+    4. order (orden: "Rodentia")
+    5. class (clase: "Mammalia")
+    6. "Animalia" (por defecto)
+    
+    NOTA IMPORTANTE:
+    - common_name NO se usa en la cascada taxonómica
+    - common_name se mapea únicamente a vernacularName
+    - La cascada taxonómica usa solo campos científicos formales
     
     Retorna: (observationType, scientificName)
     """
@@ -322,14 +352,19 @@ def classify_observation_and_scientific_name(row):
     species = str(row.get("species", "")).strip()
     order = str(row.get("order", "")).strip()
     family = str(row.get("family", "")).strip()
+    class_name = str(row.get("class", "")).strip()  # Campo 'class' del CSV
     
     # Normalizar common_name para comparaciones
     common_lower = common_name.lower()
     
+    # ========================================================================
+    # CASOS ESPECIALES (basados en common_name)
+    # ========================================================================
+    
     # 1. Human cases
     if common_lower in {"human", "human-camera trapper"}:
         # Para humanos, priorizar scientific_name_norm si existe, sino usar "Homo sapiens"
-        sci_name = scientific_name_norm if scientific_name_norm else "Homo sapiens"
+        sci_name = scientific_name_norm if scientific_name_norm and scientific_name_norm.lower() not in {"", "nan", "none"} else "Homo sapiens"
         return "human", sci_name
     
     # 2. Blank case
@@ -352,24 +387,40 @@ def classify_observation_and_scientific_name(row):
     elif common_lower == "unclassified":
         return "unclassified", "blank"
     
-    # 7. Casos con datos taxonómicos (prioridad: scientific_name_norm > common_name > cascada taxonómica)
+    # ========================================================================
+    # CASCADA TAXONÓMICA (casos normales con datos científicos)
+    # ========================================================================
     else:
-        # Determinar el scientificName según disponibilidad
         scientific_name = None
         
-        # PRIORIDAD 1: scientific_name_norm (genus + species)
-        if scientific_name_norm and scientific_name_norm.lower() not in {"", "nan", "none"}:
+        # PRIORIDAD 1: genus + species (nombre científico completo)
+        # Ejemplo: "Dasyprocta punctata"
+        if (scientific_name_norm and 
+            scientific_name_norm.lower() not in {"", "nan", "none"} and
+            " " in scientific_name_norm):  # Verificar que tiene espacio (genus + species)
             scientific_name = scientific_name_norm
         
-        # PRIORIDAD 2: common_name si existe y no está vacío
-        elif common_name and common_name.lower() not in {"", "nan", "none"}:
-            scientific_name = common_name
+        # PRIORIDAD 2: genus solo (cuando no hay species o scientific_name_norm incompleto)
+        # Ejemplo: "Didelphis"
+        elif genus and genus.lower() not in {"", "nan", "none"}:
+            scientific_name = genus
         
-        # PRIORIDAD 3: Cascada taxonómica
-        elif order and order.lower() not in {"", "nan", "none"}:
-            scientific_name = order
+        # PRIORIDAD 3: family (familia)
+        # Ejemplo: "Dasyproctidae"
         elif family and family.lower() not in {"", "nan", "none"}:
             scientific_name = family
+        
+        # PRIORIDAD 4: order (orden)
+        # Ejemplo: "Rodentia"
+        elif order and order.lower() not in {"", "nan", "none"}:
+            scientific_name = order
+        
+        # PRIORIDAD 5: class (clase)
+        # Ejemplo: "Mammalia", "Aves"
+        elif class_name and class_name.lower() not in {"", "nan", "none"}:
+            scientific_name = class_name
+        
+        # PRIORIDAD 6: Animalia (por defecto cuando no hay datos taxonómicos)
         else:
             scientific_name = "Animalia"
         
@@ -697,11 +748,13 @@ def _build_datapackage_min(work_dir: Path,
         admin = projects.get("project_admin", pd.Series([""])).iloc[0]
         admin_email = projects.get("project_admin_email", pd.Series([""])).iloc[0]
         org = projects.get("project_admin_organization", pd.Series([""])).iloc[0]
+        citation = projects.get("data_citation", pd.Series([""])).iloc[0]
         data_lic = projects.get("metadata_license", pd.Series([""])).iloc[0]
         img_lic  = projects.get("image_license", pd.Series([""])).iloc[0]
         capt_m   = projects.get("project_sensor_method", pd.Series([""])).iloc[0]
         capt_layout = projects.get("project_sensor_layout", pd.Series([""])).iloc[0]
         proj_type= projects.get("project_type", pd.Series([""])).iloc[0]
+        proj_indiv_animals = projects.get("project_individual_animals", pd.Series([""])).iloc[0]
     else:
         name = "wi-project"
         title = "WI Project"
@@ -710,11 +763,13 @@ def _build_datapackage_min(work_dir: Path,
         admin = ""
         admin_email = ""
         org = ""
+        citation = ""
         data_lic = ""
         img_lic  = ""
         capt_m   = ""
         capt_layout = ""
         proj_type= ""
+        proj_indiv_animals = ""
 
     # schemas
     if schema_paths and all(Path(p).exists() for p in schema_paths.values()):
@@ -732,14 +787,136 @@ def _build_datapackage_min(work_dir: Path,
     pkg_name  = projects.get("project_name", pd.Series(["wi-project"])).iloc[0] if not projects.empty else "wi-project"
     pkg_title = projects.get("project_name", pd.Series(["WI Project"])).iloc[0] if not projects.empty else "WI Project"
 
-    # Construir lista de captureMethod desde project_sensor_method y project_sensor_layout
-    capture_methods = []
-    if str(capt_m).strip():
-        capture_methods.append(str(capt_m).strip())
-    if str(capt_layout).strip() and str(capt_layout).strip() not in capture_methods:
-        capture_methods.append(str(capt_layout).strip())
-    if not capture_methods:
-        capture_methods = ["activityDetection"]
+    # ========================================================================
+    # CONSTRUCCIÓN DEL OBJETO PROJECT CON TRANSFORMACIONES DE VOCABULARIO
+    # ========================================================================
+    
+    # Transformar captureMethod: project_sensor_method (WI) → captureMethod (Camtrap-DP)
+    # Diccionario: "Image" → "media", "Sequence" → "event"
+    def _transform_capture_method(val: str) -> list:
+        """Transforma project_sensor_method a captureMethod (array)"""
+        val_normalized = str(val).strip()
+        
+        if val_normalized == "Image":
+            return ["media"]
+        elif val_normalized == "Sequence":
+            return ["event"]
+        elif val_normalized:
+            # Si hay valor pero no coincide con el diccionario, usarlo tal cual
+            return [val_normalized]
+        else:
+            # Valor por defecto
+            return ["activityDetection"]
+    
+    # Transformar observationLevel: project_type (WI) → observationLevel (Camtrap-DP)
+    # Diccionario: "Image" → "media", "Sequence" → "event"
+    def _transform_observation_level(val: str) -> list:
+        """Transforma project_type a observationLevel (array)"""
+        val_normalized = str(val).strip()
+        
+        if val_normalized == "Image":
+            return ["media"]
+        elif val_normalized == "Sequence":
+            return ["event"]
+        elif val_normalized:
+            # Si hay valor pero no coincide con el diccionario, usarlo tal cual
+            return [val_normalized]
+        else:
+            # Valor por defecto
+            return ["media"]
+    
+    # Transformar samplingDesign: project_sensor_layout (WI) → samplingDesign (Camtrap-DP)
+    # Diccionario: "Systematic" → "systematicRandom", "Randomized" → "simpleRandom",
+    #              "Convenience" → "opportunistic", "Targeted" → "targeted"
+    def _transform_sampling_design(val: str) -> str:
+        """Transforma project_sensor_layout a samplingDesign (string)"""
+        val_normalized = str(val).strip()
+        
+        if val_normalized == "Systematic":
+            return "systematicRandom"
+        elif val_normalized == "Randomized":
+            return "simpleRandom"
+        elif val_normalized == "Convenience":
+            return "opportunistic"
+        elif val_normalized == "Targeted":
+            return "targeted"
+        elif val_normalized:
+            # Si hay valor pero no coincide, usarlo tal cual
+            return val_normalized
+        else:
+            # Valor vacío
+            return ""
+    
+    # Transformar individualAnimals: project_individual_animals (WI) → individualAnimals (Camtrap-DP)
+    # Diccionario: "Yes" → true, "No" → false
+    def _transform_individual_animals(val: str) -> bool:
+        """Transforma project_individual_animals a individualAnimals (booleano)"""
+        val_normalized = str(val).strip()
+        
+        if val_normalized == "Yes":
+            return True
+        elif val_normalized == "No":
+            return False
+        else:
+            # Valor por defecto (conservador: asumimos que no se registran individuos)
+            return False
+    
+    # Construir objeto project
+    project_obj = {
+        "title": str(title),
+        "samplingDesign": _transform_sampling_design(capt_layout),
+        "captureMethod": _transform_capture_method(capt_m),
+        "observationLevel": _transform_observation_level(proj_type),
+        "individualAnimals": _transform_individual_animals(proj_indiv_animals)
+    }
+    
+    # ========================================================================
+    # CONSTRUCCIÓN DEL OBJETO CONTRIBUTORS
+    # ========================================================================
+    
+    # Extraer firstName y lastName desde project_admin
+    def _extract_name_parts(full_name: str) -> tuple:
+        """
+        Extrae firstName (primera palabra) y lastName (segunda palabra) de un nombre completo.
+        
+        Args:
+            full_name: Nombre completo (ej: "Catalina Silva")
+            
+        Returns:
+            tuple: (firstName, lastName)
+            
+        Example:
+            >>> _extract_name_parts("Catalina Silva")
+            ('Catalina', 'Silva')
+            >>> _extract_name_parts("Juan")
+            ('Juan', '')
+        """
+        name_normalized = str(full_name).strip()
+        
+        # Dividir el nombre en palabras
+        parts = name_normalized.split()
+        
+        if len(parts) == 0:
+            return "", ""
+        elif len(parts) == 1:
+            return parts[0], ""
+        else:
+            # Primera palabra = firstName, segunda palabra = lastName
+            return parts[0], parts[1]
+    
+    # Construir objeto contributors (array)
+    firstName, lastName = _extract_name_parts(admin)
+    
+    contributors = [
+        {
+            "title": str(admin),
+            "email": str(admin_email),
+            "organization": str(org),
+            "role": "contact",
+            "firstName": firstName,
+            "lastName": lastName
+        }
+    ]
 
     datapackage  = {
         "profile": "tabular-data-package",
@@ -748,12 +925,10 @@ def _build_datapackage_min(work_dir: Path,
         "id": str(pid),
         "description": str(desc),
         "created": pkg_created,
-        "mainContributorName": str(admin),
-        "mainContributorEmail": str(admin_email),
-        "organization": str(org),
+        "contributors": contributors,
+        "bibliographicCitation": str(citation),
         "licenses": _build_licenses_array(data_lic, img_lic),
-        "captureMethod": capture_methods,
-        "observationLevel": str(proj_type),
+        "project": project_obj,
         "extras": {"timezone_hint": timezone_hint},
         # Recursos
         "resources": [
@@ -1136,6 +1311,341 @@ def process_zip(
         camera_heights = deploys.apply(_map_camera_height, axis=1)
         include_if_any(dep_out, "cameraHeight", camera_heights)
 
+    # ========================================================================
+    # MAPEO DE CAMPOS ADICIONALES (DESPLIEGUES)
+    # ========================================================================
+    
+    # Recorded By → setupBy
+    include_if_any(dep_out, "setupBy", deploys.get("recorded_by"))
+    
+    # quiet_period → cameraDelay
+    if "quiet_period" in deploys.columns:
+        camera_delay = pd.to_numeric(deploys["quiet_period"], errors="coerce")
+        include_if_any(dep_out, "cameraDelay", camera_delay)
+    
+    # sensor_orientation → cameraTilt (con transformación)
+    def _map_camera_tilt(val):
+        """
+        Mapea sensor_orientation a cameraTilt:
+        - "Parallel" → 0
+        - "Pointed Downward" → -10
+        - Otros valores → tal cual (convertir a numérico si es posible)
+        """
+        if pd.isna(val):
+            return pd.NA
+        
+        val_normalized = str(val).strip()
+        
+        if val_normalized == "Parallel":
+            return 0
+        elif val_normalized == "Pointed Downward":
+            return -10
+        else:
+            # Intentar convertir a numérico
+            try:
+                return float(val_normalized)
+            except (ValueError, TypeError):
+                # Si no es numérico, retornar tal cual
+                return val_normalized
+    
+    if "sensor_orientation" in deploys.columns:
+        camera_tilts = deploys["sensor_orientation"].apply(_map_camera_tilt)
+        include_if_any(dep_out, "cameraTilt", camera_tilts)
+    
+    # detection_distance → detectionDistance
+    if "detection_distance" in deploys.columns:
+        detection_dist = pd.to_numeric(deploys["detection_distance"], errors="coerce")
+        include_if_any(dep_out, "detectionDistance", detection_dist)
+    
+    # camera_functioning → timestampIssues
+    def _map_timestamp_issues(val):
+        """
+        Mapea camera_functioning a timestampIssues (booleano).
+        
+        NOTA IMPORTANTE:
+        - timestampIssues (Camtrap-DP) indica problemas ESPECÍFICOS de timestamp
+          (zona horaria desconocida, cambio am/pm, reloj mal configurado)
+        - camera_functioning (Wildlife Insights) indica el ESTADO GENERAL de la cámara
+        
+        Estrategia conservadora:
+        - "Camera Functioning" → False (asumimos timestamps OK)
+        - Valores vacíos/desconocidos → False (por defecto, asumimos OK)
+        - SOLO marcamos True si hay indicadores explícitos de problemas de timestamp
+        
+        ADVERTENCIA:
+        Este mapeo es una APROXIMACIÓN. Wildlife Insights no tiene un campo 
+        específico para problemas de timestamp. Recomendamos revisar manualmente
+        los timestamps si hay dudas sobre su confiabilidad.
+        """
+        if pd.isna(val):
+            return False  # Por defecto: asumir timestamps OK
+        
+        val_normalized = str(val).strip().lower()
+        
+        # Valores que indican funcionamiento normal
+        if val_normalized in ["functioning", "camera functioning", "ok", ""]:
+            return False
+        
+        # SOLO marcar como True si hay indicadores EXPLÍCITOS de problemas de timestamp
+        # (puedes agregar más casos según tu experiencia con Wildlife Insights)
+        timestamp_problem_indicators = [
+            "timestamp",
+            "clock",
+            "time issue",
+            "time problem",
+            "timezone",
+            "am/pm",
+            "date issue",
+            "date problem"
+        ]
+        
+        # Buscar indicadores de problemas de timestamp en el texto
+        for indicator in timestamp_problem_indicators:
+            if indicator in val_normalized:
+                return True
+        
+        # Si hay otro tipo de problema (ej: batería, sensor) pero no de timestamp
+        # → No marcamos timestampIssues como True (es un problema diferente)
+        return False
+    
+    if "camera_functioning" in deploys.columns:
+        timestamp_issues = deploys["camera_functioning"].apply(_map_timestamp_issues)
+        include_if_any(dep_out, "timestampIssues", timestamp_issues)
+    
+    # bait_type → baitUse
+    def _map_bait_use(val) -> bool:
+        """
+        Mapea bait_type a baitUse (campo booleano en Camtrap-DP).
+        
+        IMPORTANTE:
+        - baitUse es un campo BOOLEAN (true/false), NO un string
+        - true: si se usó cebo (cualquier tipo)
+        - false: si NO se usó cebo
+        - La información sobre el TIPO de cebo va en deploymentTags/deploymentComments
+        
+        Wildlife Insights usa:
+        - "None" (string) para indicar ausencia de cebo → false
+        - Cualquier otro valor (ej: "Scent", "Food", "Visual") → true
+        
+        Retorna:
+            bool: True si se usó cebo, False si no
+        """
+        # Valores nulos o vacíos → False (no se usó cebo)
+        if pd.isna(val):
+            return False
+        
+        val_normalized = str(val).strip()
+        
+        # Manejar valores vacíos o indicadores explícitos de ausencia → False
+        if val_normalized == "" or val_normalized.lower() in ["none", "no", "no bait", "n/a", "na"]:
+            return False
+        
+        # Cualquier otro valor (incluso texto desconocido) → True (se usó algún tipo de cebo)
+        # Ejemplos que retornan True:
+        # - "Scent", "Food", "Visual", "Acoustic"
+        # - "Peanut butter" (cebo específico)
+        # - "Yes" (confirmación genérica)
+        # - Cualquier texto que no sea "None"/"No"
+        return True
+    
+    if "bait_type" in deploys.columns:
+        bait_uses = deploys["bait_type"].apply(_map_bait_use)
+        include_if_any(dep_out, "baitUse", bait_uses)
+    
+    # feature_type → featureType
+    def _map_feature_type(val):
+        """
+        Mapea feature_type a featureType con validación estricta del vocabulario Camtrap-DP.
+        
+        Vocabulario válido:
+        - roadPaved, roadDirt, trailHiking, trailGame
+        - roadUnderpass, roadOverpass, roadBridge, culvert
+        - burrow, nestSite, carcass, waterSource, fruitingTree
+        
+        Wildlife Insights puede usar variaciones que se normalizan automáticamente:
+        - "Burrow" → "burrow"
+        - "Road - Paved" → "roadPaved"
+        - "Trail" → "trailHiking"
+        - "Water" → "waterSource"
+        
+        Retorna pd.NA para:
+        - Valores vacíos
+        - "None", "N/A", "NA"
+        - Valores no reconocidos (evita errores de validación)
+        """
+        # Manejar valores vacíos o NaN
+        if pd.isna(val):
+            return pd.NA
+        
+        val_normalized = str(val).strip()
+        
+        # Excluir valores vacíos o indicadores de ausencia
+        if val_normalized == "" or val_normalized.lower() in ["none", "n/a", "na", "other"]:
+            return pd.NA
+        
+        # Normalizar a minúsculas para comparación
+        val_lower = val_normalized.lower()
+        
+        # Vocabulario controlado Camtrap-DP (enum)
+        valid_values = {
+            "roadpaved", "roaddirt", "trailhiking", "trailgame",
+            "roadunderpass", "roadoverpass", "roadbridge", "culvert",
+            "burrow", "nestsite", "carcass", "watersource", "fruitingtree"
+        }
+        
+        # Mapeo de variaciones comunes de Wildlife Insights → Camtrap-DP
+        mappings = {
+            # Roads
+            "road - paved": "roadPaved",
+            "paved road": "roadPaved",
+            "road paved": "roadPaved",
+            "paved": "roadPaved",
+            
+            "road - dirt": "roadDirt",
+            "dirt road": "roadDirt",
+            "road dirt": "roadDirt",
+            "dirt": "roadDirt",
+            "unpaved road": "roadDirt",
+            
+            # Trails
+            "trail - hiking": "trailHiking",
+            "hiking trail": "trailHiking",
+            "trail hiking": "trailHiking",
+            "trail": "trailHiking",
+            "hiking": "trailHiking",
+            
+            "trail - game": "trailGame",
+            "game trail": "trailGame",
+            "trail game": "trailGame",
+            "animal trail": "trailGame",
+            
+            # Infrastructure
+            "road - underpass": "roadUnderpass",
+            "underpass": "roadUnderpass",
+            
+            "road - overpass": "roadOverpass",
+            "overpass": "roadOverpass",
+            
+            "road - bridge": "roadBridge",
+            "bridge": "roadBridge",
+            
+            # Natural features
+            "water source": "waterSource",
+            "water": "waterSource",
+            "watering hole": "waterSource",
+            "pond": "waterSource",
+            "stream": "waterSource",
+            
+            "nest site": "nestSite",
+            "nest": "nestSite",
+            
+            "fruiting tree": "fruitingTree",
+            "fruit tree": "fruitingTree",
+            "tree": "fruitingTree",
+        }
+        
+        # Intentar mapeo directo de variaciones
+        if val_lower in mappings:
+            return mappings[val_lower]
+        
+        # Verificar si el valor (sin espacios, minúsculas) está en el vocabulario
+        val_compact = val_lower.replace(" ", "").replace("-", "").replace("_", "")
+        if val_compact in valid_values:
+            # Retornar en formato camelCase estándar
+            camel_case_map = {
+                "roadpaved": "roadPaved",
+                "roaddirt": "roadDirt",
+                "trailhiking": "trailHiking",
+                "trailgame": "trailGame",
+                "roadunderpass": "roadUnderpass",
+                "roadoverpass": "roadOverpass",
+                "roadbridge": "roadBridge",
+                "culvert": "culvert",
+                "burrow": "burrow",
+                "nestsite": "nestSite",
+                "carcass": "carcass",
+                "watersource": "waterSource",
+                "fruitingtree": "fruitingTree"
+            }
+            return camel_case_map.get(val_compact, pd.NA)
+        
+        # Valor no reconocido → pd.NA (evita errores de validación)
+        return pd.NA
+    
+    if "feature_type" in deploys.columns:
+        feature_types = deploys["feature_type"].apply(_map_feature_type)
+        include_if_any(dep_out, "featureType", feature_types)
+    
+    # plot_treatment_description → habitat
+    include_if_any(dep_out, "habitat", deploys.get("plot_treatment_description"))
+    
+    # bait_type + bait_description → deploymentTags (concatenados)
+    if "bait_type" in deploys.columns or "bait_description" in deploys.columns:
+        def _create_deployment_tags(row):
+            """
+            Concatena bait_type y bait_description separados por coma.
+            
+            Excluye valores que indican ausencia de información:
+            - "None", "none", "N/A", "NA"
+            - Strings vacíos
+            - NaN/null
+            """
+            bait_type = row.get("bait_type", "")
+            bait_desc = row.get("bait_description", "")
+            
+            # Normalizar valores vacíos o indicadores de ausencia
+            bt = str(bait_type).strip() if not pd.isna(bait_type) else ""
+            bd = str(bait_desc).strip() if not pd.isna(bait_desc) else ""
+            
+            # Filtrar valores no informativos
+            excluded_values = ["nan", "none", "n/a", "na", ""]
+            parts = []
+            
+            if bt and bt.lower() not in excluded_values:
+                parts.append(bt)
+            if bd and bd.lower() not in excluded_values:
+                parts.append(bd)
+            
+            if parts:
+                return ", ".join(parts)
+            else:
+                return pd.NA
+        
+        deployment_tags = deploys.apply(_create_deployment_tags, axis=1)
+        include_if_any(dep_out, "deploymentTags", deployment_tags)
+    
+    # camera_functioning → deploymentComments
+    if "camera_functioning" in deploys.columns:
+        def _create_deployment_comments(val):
+            """
+            Mapea camera_functioning a deploymentComments.
+            
+            Camtrap-DP: deploymentComments es un campo opcional (string) para comentarios
+            sobre el deployment.
+            
+            Wildlife Insights: camera_functioning contiene el estado de la cámara
+            (ej: "Camera Functioning", "Vandalized", "Battery Dead", etc.)
+            
+            Estrategia:
+            - Solo valores vacíos o NaN → pd.NA
+            - Todos los demás valores (incluyendo "Camera Functioning") se conservan
+              tal cual, ya que representan comentarios válidos sobre el deployment
+            """
+            if pd.isna(val):
+                return pd.NA
+            
+            val_normalized = str(val).strip()
+            
+            # Solo valores completamente vacíos se convierten a pd.NA
+            if val_normalized == "":
+                return pd.NA
+            
+            # Todos los demás valores son comentarios válidos y se conservan tal cual
+            return val_normalized
+        
+        deployment_comments = deploys["camera_functioning"].apply(_create_deployment_comments)
+        include_if_any(dep_out, "deploymentComments", deployment_comments)
+
     # Verificación requerida
     for col in ["deploymentID", "latitude", "longitude", "deploymentStart", "deploymentEnd"]:
         if dep_out[col].isna().sum() > 0:
@@ -1233,6 +1743,38 @@ def process_zip(
     # Mapear favorite desde highlighted
     if "highlighted" in img_sorted.columns:
         include_if_any(med_out, "favorite", img_sorted["highlighted"])
+    
+    # individual_animal_notes → mediaComments
+    if "individual_animal_notes" in img_sorted.columns:
+        def _create_media_comments(val):
+            """
+            Mapea individual_animal_notes a mediaComments.
+            
+            Camtrap-DP: mediaComments es un campo opcional (string) para comentarios
+            sobre el archivo multimedia.
+            
+            Wildlife Insights: individual_animal_notes contiene notas sobre el individuo
+            animal observado en la imagen/video.
+            
+            Estrategia:
+            - Solo valores vacíos o NaN → pd.NA
+            - Todos los demás valores se conservan tal cual, ya que son comentarios
+              válidos sobre el medio
+            """
+            if pd.isna(val):
+                return pd.NA
+            
+            val_normalized = str(val).strip()
+            
+            # Solo valores completamente vacíos se convierten a pd.NA
+            if val_normalized == "":
+                return pd.NA
+            
+            # Todos los demás valores son comentarios válidos y se conservan tal cual
+            return val_normalized
+        
+        media_comments = img_sorted["individual_animal_notes"].apply(_create_media_comments)
+        include_if_any(med_out, "mediaComments", media_comments)
 
     cap_value = pd.NA
     if "project_sensor_method" in projects.columns:
@@ -1343,6 +1885,189 @@ def process_zip(
     obs_out["scientificName"] = classification_results[1]
 
     include_if_any(obs_out, "vernacularName", img_for_obs.get("common_name"))
+    
+    # ========================================================================
+    # MAPEO DE CAMPOS ADICIONALES (OBSERVACIONES)
+    # ========================================================================
+    
+    # number_of_objects → count
+    if "number_of_objects" in img_for_obs.columns:
+        count_values = pd.to_numeric(img_for_obs["number_of_objects"], errors="coerce")
+        include_if_any(obs_out, "count", count_values)
+    
+    # age → lifeStage
+    include_if_any(obs_out, "lifeStage", img_for_obs.get("age"))
+    
+    # sex → sex
+    include_if_any(obs_out, "sex", img_for_obs.get("sex"))
+    
+    # behavior → behavior
+    include_if_any(obs_out, "behavior", img_for_obs.get("behavior"))
+    
+    # individual_id → individualID
+    include_if_any(obs_out, "individualID", img_for_obs.get("individual_id"))
+    
+    # identified_by → classifiedBy
+    include_if_any(obs_out, "classifiedBy", img_for_obs.get("identified_by"))
+    
+    # cv_confidence → classificationProbability (transformar porcentaje a 0-1)
+    if "cv_confidence" in img_for_obs.columns:
+        def _map_classification_probability(val):
+            """
+            Mapea cv_confidence a classificationProbability.
+            
+            Transforma valores de confianza del modelo CV (Computer Vision) a probabilidad
+            entre 0 y 1 según el estándar Camtrap-DP.
+            
+            Wildlife Insights puede proporcionar cv_confidence en diferentes formatos:
+            - Porcentajes: "85.5" → 0.855 (valores > 1.0)
+            - Decimales: "0.855" → 0.855 (valores 0.0-1.0)
+            - Valores vacíos → pd.NA
+            
+            Casos especiales:
+            - Valores negativos → pd.NA (confianza no puede ser negativa)
+            - Valores > 100 → pd.NA (porcentaje inválido)
+            - Exactamente 1.0 → 1.0 (100% de confianza, no 1%)
+            
+            Retorna:
+                float entre 0.0 y 1.0, o pd.NA si el valor es inválido
+            """
+            if pd.isna(val):
+                return pd.NA
+            
+            try:
+                # Convertir a string y limpiar espacios
+                val_str = str(val).strip()
+                
+                # Manejar strings vacíos
+                if val_str == "" or val_str.lower() in ["nan", "none", "null"]:
+                    return pd.NA
+                
+                # Convertir a float
+                val_float = float(val_str)
+                
+                # Validar que no sea negativo
+                if val_float < 0.0:
+                    return pd.NA
+                
+                # Caso 1: Valor ya está en rango 0-1 (formato decimal)
+                if 0.0 <= val_float <= 1.0:
+                    return val_float
+                
+                # Caso 2: Valor en formato porcentaje (> 1.0)
+                elif val_float <= 100.0:
+                    return val_float / 100.0
+                
+                # Caso 3: Valor fuera de rango válido (> 100)
+                else:
+                    return pd.NA
+                    
+            except (ValueError, TypeError, AttributeError):
+                return pd.NA
+        
+        classification_probs = img_for_obs["cv_confidence"].apply(_map_classification_probability)
+        include_if_any(obs_out, "classificationProbability", classification_probs)
+    
+    # markings → observationTags
+    include_if_any(obs_out, "observationTags", img_for_obs.get("markings"))
+    
+    # individual_animal_notes → observationComments
+    if "individual_animal_notes" in img_for_obs.columns:
+        def _create_observation_comments(val):
+            """
+            Mapea individual_animal_notes a observationComments.
+            
+            Camtrap-DP: observationComments es un campo opcional (string) para comentarios
+            sobre la observación.
+            
+            Wildlife Insights: individual_animal_notes contiene notas sobre el individuo
+            animal observado.
+            
+            Estrategia:
+            - Solo valores vacíos o NaN → pd.NA
+            - Todos los demás valores se conservan tal cual
+            """
+            if pd.isna(val):
+                return pd.NA
+            
+            val_normalized = str(val).strip()
+            
+            if val_normalized == "":
+                return pd.NA
+            
+            return val_normalized
+        
+        observation_comments = img_for_obs["individual_animal_notes"].apply(_create_observation_comments)
+        include_if_any(obs_out, "observationComments", observation_comments)
+    
+    # bounding_boxes → bboxX, bboxY, bboxWidth, bboxHeight
+    if "bounding_boxes" in img_for_obs.columns:
+        def _parse_bounding_boxes(val):
+            """
+            Parsea bounding_boxes de Wildlife Insights a coordenadas Camtrap-DP.
+            
+            Formato Wildlife Insights:
+            '{"{\"detectionBox\":[x_min,y_min,x_max,y_max]}"}'
+            
+            Ejemplo:
+            '{"{\"detectionBox\":[0.8617,0.7005,0.9490,0.8180]}"}'
+            
+            Formato Camtrap-DP:
+            - bboxX: x_min (esquina superior izquierda, normalizado 0-1)
+            - bboxY: y_min (esquina superior izquierda, normalizado 0-1)
+            - bboxWidth: x_max - x_min (ancho normalizado 0-1)
+            - bboxHeight: y_max - y_min (alto normalizado 0-1)
+            
+            Retorna: (bboxX, bboxY, bboxWidth, bboxHeight) o (pd.NA, pd.NA, pd.NA, pd.NA)
+            """
+            if pd.isna(val):
+                return pd.NA, pd.NA, pd.NA, pd.NA
+            
+            try:
+                val_str = str(val).strip()
+                
+                # Si está vacío, retornar NA
+                if val_str == "":
+                    return pd.NA, pd.NA, pd.NA, pd.NA
+                
+                # Buscar el patrón de detectionBox usando regex
+                # El patrón debe manejar comillas escapadas: \\"detectionBox\\"
+                import re
+                pattern = r'detectionBox["\\\s:]*\[([0-9.]+),\s*([0-9.]+),\s*([0-9.]+),\s*([0-9.]+)\]'
+                match = re.search(pattern, val_str)
+                
+                if match:
+                    x_min = float(match.group(1))
+                    y_min = float(match.group(2))
+                    x_max = float(match.group(3))
+                    y_max = float(match.group(4))
+                    
+                    # Calcular dimensiones
+                    bbox_x = x_min
+                    bbox_y = y_min
+                    bbox_width = x_max - x_min
+                    bbox_height = y_max - y_min
+                    
+                    # Validar rangos (coordenadas normalizadas deben estar entre 0 y 1)
+                    if (0.0 <= bbox_x <= 1.0 and 0.0 <= bbox_y <= 1.0 and
+                        0.0 <= bbox_width <= 1.0 and 0.0 <= bbox_height <= 1.0):
+                        return bbox_x, bbox_y, bbox_width, bbox_height
+                
+                # Si no se pudo parsear o validar, retornar NA
+                return pd.NA, pd.NA, pd.NA, pd.NA
+                
+            except Exception as e:
+                return pd.NA, pd.NA, pd.NA, pd.NA
+        
+        # Parsear bounding boxes
+        bbox_parsed = img_for_obs["bounding_boxes"].apply(_parse_bounding_boxes)
+        bbox_df = pd.DataFrame(bbox_parsed.tolist(), columns=["bboxX", "bboxY", "bboxWidth", "bboxHeight"])
+        
+        # Agregar columnas solo si tienen valores válidos
+        include_if_any(obs_out, "bboxX", bbox_df["bboxX"])
+        include_if_any(obs_out, "bboxY", bbox_df["bboxY"])
+        include_if_any(obs_out, "bboxWidth", bbox_df["bboxWidth"])
+        include_if_any(obs_out, "bboxHeight", bbox_df["bboxHeight"])
 
     # Requeridos
     for col in ["observationID", "deploymentID", "eventStart", "eventEnd", "observationLevel", "observationType"]:
