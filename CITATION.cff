@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+title: "CamTrapFlow (CTF): an open, reproducible desktop workflow to mobilize camera-trap biodiversity data from Wildlife Insights to GBIF"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - given-names: Cristian C.
+    family-names: Acevedo
+    orcid: "https://orcid.org/0000-0002-7864-0775"
+    affiliation: "Instituto de Investigación de Recursos Biológicos Alexander von Humboldt (Red OTUS), Colombia"
+  - given-names: Angélica
+    family-names: Díaz-Pulido
+    orcid: "https://orcid.org/0000-0003-4166-4084"
+    affiliation: "Instituto de Investigación de Recursos Biológicos Alexander von Humboldt (Red OTUS), Colombia"
+repository-code: "https://github.com/PEM-Humboldt/cam-trap-flow"
+url: "https://github.com/PEM-Humboldt/cam-trap-flow"
+abstract: >-
+  CamTrapFlow is an open, reproducible, offline desktop workflow that takes
+  camera-trap data from raw video to a validated, GBIF-ready Camtrap Data
+  Package. It integrates three modules (Img2WI, WI2CamtrapDP, WIsualization)
+  behind a unified launcher, automating standardization and validation while
+  keeping publication decisions in the hands of the original data producers.
+keywords:
+  - camera traps
+  - biodiversity
+  - GBIF
+  - Camtrap-DP
+  - Wildlife Insights
+  - SiB Colombia
+  - data standardization
+  - reproducibility
+license: MIT
+version: 1.0.0
+date-released: "2026-06-24"
