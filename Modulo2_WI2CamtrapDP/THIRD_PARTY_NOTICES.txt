@@ -1,0 +1,25 @@
+THIRD-PARTY NOTICES — Module 2 (WI2CamtrapDP)
+=============================================
+
+WI2CamtrapDP redistributes and/or depends on the following third-party
+components, each under its own license. See the repository-level
+THIRD_PARTY_NOTICES.txt for the full list and details.
+
+Camtrap Data Package (Camtrap DP) — schemas, version 1.0
+- Project: https://camtrap-dp.tdwg.org  ·  https://github.com/tdwg/camtrap-dp
+- Maintained by Biodiversity Information Standards (TDWG).
+- This module bundles the Camtrap DP 1.0 JSON schemas under
+  camtrapdp/schemas/ (camtrap-dp-profile.json, deployments-table-schema.json,
+  media-table-schema.json, observations-table-schema.json) to generate and
+  validate Camtrap DP packages. These files are authored by the TDWG
+  Camtrap DP maintainers and are redistributed for interoperability;
+  attribution remains with the original authors.
+
+Python dependencies (installed via pip, not redistributed as binaries):
+- PyQt5 — GPL v3 or commercial (Riverbank).
+- pandas, numpy — BSD-3-Clause.
+- python-dateutil — Apache-2.0 / BSD.  ·  pytz — MIT.
+- frictionless — MIT.  ·  requests — Apache-2.0.  ·  tatsu — BSD-2-Clause.
+
+Versions and exact licenses should be verified against the dependencies
+actually installed (see requirements.txt) before each public release.
