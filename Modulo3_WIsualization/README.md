@@ -1,4 +1,4 @@
-# WIsualization - Module 3 of CamTrapFlow
+# WIsualization — Module 3 of CamTrapFlow
 
 **Statistical analysis and scientific visualization of camera-trap data**
 
@@ -80,7 +80,7 @@ Modulo3_WIsualization/
 │   │   └── plots_mpl.py        # matplotlib plots
 │   └── resources/icons/        # Application and institutional icons
 ├── run_gui.py                  # Development launch script
-├── build.spec                  # PyInstaller configuration
+├── WIsualization.spec                  # PyInstaller configuration
 ├── pyproject.toml
 ├── requirements.txt
 ├── LICENSE
@@ -90,11 +90,11 @@ Modulo3_WIsualization/
 ## Build the executable
 
 ```bash
-pyinstaller build.spec
-# output: dist/HumboldtViz/HumboldtViz.exe (GUI, no console)
+pyinstaller WIsualization.spec
+# output: dist/WIsualization.exe (GUI, no console)
 ```
 
-The `build.spec` file bundles resources (icons, styles) and the matplotlib/scipy dependencies.
+The `WIsualization.spec` file bundles resources (icons, styles) and the matplotlib/scipy dependencies.
 
 ---
 
@@ -197,7 +197,7 @@ Modulo3_WIsualization/
 │   │   └── plots_mpl.py        # Gráficos matplotlib
 │   └── resources/icons/        # Iconos de la aplicación e institucionales
 ├── run_gui.py                  # Script de ejecución para desarrollo
-├── build.spec                  # Configuración PyInstaller
+├── WIsualization.spec                  # Configuración PyInstaller
 ├── pyproject.toml
 ├── requirements.txt
 ├── LICENSE
@@ -207,11 +207,11 @@ Modulo3_WIsualization/
 ## Compilar el ejecutable
 
 ```bash
-pyinstaller build.spec
-# salida: dist/HumboldtViz/HumboldtViz.exe (GUI, sin consola)
+pyinstaller WIsualization.spec
+# salida: dist/WIsualization.exe (GUI, sin consola)
 ```
 
-El archivo `build.spec` incluye los recursos (iconos, estilos) y las dependencias de matplotlib/scipy.
+El archivo `WIsualization.spec` incluye los recursos (iconos, estilos) y las dependencias de matplotlib/scipy.
 
 ---
 
