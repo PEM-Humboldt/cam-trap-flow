@@ -1,91 +1,248 @@
-# WI2CamtrapDP 📦🐾
+# WI2CamtrapDP — Module 2 of CamTrapFlow
 
-**Wildlife Insights to Camtrap Data Package Converter**
+**Convert Wildlife Insights project exports into Camtrap DP (v1.0) packages, ready for GBIF and SiB Colombia**
 
-Herramienta de escritorio para convertir exportaciones de [Wildlife Insights](https://www.wildlifeinsights.org/) al estándar [Camtrap-DP](https://camtrap-dp.tdwg.org/) (Camera Trap Data Package) v1.0.2 para publicación científica y análisis estandarizado de datos de fototrampeo.
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)
+![Camtrap DP](https://img.shields.io/badge/Camtrap%20DP-1.0-success.svg)
+![Part of](https://img.shields.io/badge/part%20of-CamTrapFlow%20v1.0-success.svg)
 
-[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+**English** | [Español](#wi2camtrapdp--módulo-2-de-camtrapflow)
 
----
-
-## 🎯 Características Principales
-
-- ✅ **Conversión automatizada** de proyectos Wildlife Insights a Camtrap-DP
-- ✅ **Validación integrada** con Frictionless Framework v5.x
-- ✅ **Interfaz gráfica intuitiva** (PyQt5)
-- ✅ **Gestión robusta de taxonomía** (detección de datos incompletos, múltiples identificaciones)
-- ✅ **Conversión automática de zonas horarias** a ISO-8601 UTC
-- ✅ **Empaquetado automático** en ZIP con datapackage.json + CSVs
-- ✅ **Plantilla de correo** para publicación en SIB Colombia
-- ✅ **Distribución como ejecutable** (.exe) sin necesidad de Python instalado
+*Part of the [CamTrapFlow (CTF)](../README.md) suite · Last updated: 24 June 2026*
 
 ---
 
-## 📋 Requisitos
+## Overview
 
-### Para Usuarios Finales (Ejecutable)
-- **Sistema Operativo:** Windows 10/11 (64-bit)
-- No requiere Python ni dependencias instaladas
+WI2CamtrapDP is a desktop application that converts [Wildlife Insights](https://www.wildlifeinsights.org/) project exports into the [Camtrap Data Package (Camtrap DP)](https://camtrap-dp.tdwg.org/) standard, version 1.0, for scientific publication and standardized analysis of camera-trap data. It is the standardization stage of the CamTrapFlow workflow.
 
-### Para Desarrolladores (Código Fuente)
-- **Python:** 3.8 o superior
-- **Sistema Operativo:** Windows, macOS, Linux
-- **Dependencias:** Ver [requirements.txt](requirements.txt)
+### Features
+
+- Automated conversion of Wildlife Insights projects to Camtrap DP.
+- Integrated validation with the Frictionless framework (v5.x).
+- Intuitive graphical interface (PyQt5).
+- Robust taxonomy handling (incomplete data detection, multiple identifications).
+- Automatic time-zone conversion to ISO-8601 UTC.
+- Automatic packaging into a ZIP with `datapackage.json` + CSVs.
+- Built-in email template to request publication from SiB Colombia.
+- Distributed as a portable executable (.exe), no Python required.
 
 ---
 
-## 🚀 Instalación y Uso
+## Requirements
 
-### Opción 1: Descargar Ejecutable (Recomendado para Usuarios)
+**End users**
+- Windows 10/11 (64-bit). No Python or dependencies required.
 
-1. Descarga la última versión desde [Releases](https://github.com/tu-usuario/WI2CamtrapDP/releases)
-2. Extrae el archivo ZIP
-3. Ejecuta `Camtrap DP.exe`
-4. **¡Listo!** No requiere instalación adicional
+**Developers**
+- Python 3.10+
+- Dependencies: see [`requirements.txt`](requirements.txt)
 
-### Opción 2: Ejecutar desde Código Fuente (Para Desarrolladores)
+---
 
+## Getting started
+
+**Run the packaged application (recommended)**
+1. Download the CamTrapFlow release package: see the [main README](../README.md).
+2. Launch `WI2CamtrapDP.exe` (directly, or through the CamTrapFlow Launcher).
+
+**Run from source**
 ```bash
-# 1. Clonar el repositorio
-git clone https://github.com/tu-usuario/WI2CamtrapDP.git
-cd WI2CamtrapDP
-
-# 2. Crear entorno virtual (recomendado)
+# from the Modulo2_WI2CamtrapDP/ folder
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# 3. Instalar dependencias
+venv\Scripts\activate            # Windows (use: source venv/bin/activate on macOS/Linux)
 pip install -r requirements.txt
-
-# 4. Ejecutar la aplicación
 python app.py
 ```
 
 ---
 
-## 📖 Flujo de Trabajo
+## Workflow
 
-1. **Exportar proyecto desde Wildlife Insights:**
-   - Inicia sesión en [Wildlife Insights](https://www.wildlifeinsights.org/)
-   - Selecciona tu proyecto (NO iniciativa)
-   - Descarga la exportación completa (ZIP con 4 archivos CSV)
+1. **Export from Wildlife Insights:** sign in, select your **project** (not an initiative) and download the full export (ZIP with the CSV tables).
+2. **Open WI2CamtrapDP** and select the Wildlife Insights ZIP.
+3. **Configure options:** Frictionless validation, ZIP packaging, open folder when finished, and time zone (default `America/Bogota`).
+4. **Process** and monitor progress in the log.
+5. **Results:**
+   ```
+   WI2CamtrapDP_{project_name}/
+   ├── output/
+   │   ├── deployments.csv
+   │   ├── media.csv
+   │   ├── observations.csv
+   │   └── datapackage.json
+   └── WI2CamtrapDP_{project_name}.zip
+   ```
+6. **Publish (optional):** use the email template to contact SiB Colombia.
 
-2. **Abrir WI2CamtrapDP:**
-   - Ejecuta la aplicación (`.exe` o `python app.py`)
-   - Haz clic en "Examinar" y selecciona el ZIP de Wildlife Insights
+---
 
-3. **Configurar opciones:**
-   - ☑️ **Validar con Frictionless:** Verifica la estructura del paquete
-   - ☑️ **Crear paquete ZIP:** Genera archivo comprimido final
-   - ☑️ **Abrir carpeta al terminar:** Acceso rápido a resultados
-   - 🕐 **Zona horaria:** Predeterminado `America/Bogota` (ajustar si es necesario)
+## Input and output
 
-4. **Procesar:**
-   - Haz clic en "Procesar"
-   - Monitorea el progreso en la barra y logs
+**Input — Wildlife Insights export** (ZIP, PROJECT export):
 
-5. **Resultados generados:**
+| File | Description |
+| --- | --- |
+| `projects.csv` | Project metadata (name, coordinator, licenses, objectives) |
+| `cameras.csv` | Equipment information (make, model, serial) |
+| `deployments.csv` | Spatio-temporal deployments (coordinates, dates, locations) |
+| `images_{id}.csv` | Image records + taxonomic identifications |
+
+> Only **PROJECT** exports are supported (a single `images_*.csv`). INITIATIVE exports (multiple `images_*.csv`) are not supported.
+
+**Output — Camtrap DP v1.0** (3 CSV tables + JSON metadata):
+
+| File | Description |
+| --- | --- |
+| `deployments.csv` | Camera deployments (deploymentID, locationName, latitude, longitude, start/end, cameraModel) |
+| `media.csv` | Media files (mediaID, deploymentID, captureMethod, timestamp, filePath, fileMediatype) |
+| `observations.csv` | Taxonomic observations (observationID, mediaID, scientificName, vernacularName, count, observationType) |
+| `datapackage.json` | Package metadata (title, description, licenses, contributors, validation schemas) |
+
+---
+
+## Key validations
+
+**Stops the process:** `No CV Result` values in taxonomic fields; INITIATIVE export instead of PROJECT; required fields empty in `deployments.csv`.
+
+**Warnings (process continues):** empty optional fields (e.g., `cameraModel`, `age`, `sex`); out-of-range coordinates (replaced by NA); malformed timestamps (corrected or discarded).
+
+**Optional Frictionless validation:** verifies the full Data Package structure, data types and constraints, producing a detailed per-resource/field/row report.
+
+---
+
+## Main transformations
+
+- **Taxonomy (Wildlife Insights → Darwin Core):** `genus` + `species` → `scientificName`; `common_name` → `vernacularName`.
+- **Dates (local → ISO-8601 UTC):** e.g., `2023-05-15 14:23:11` (America/Bogota, GMT-5) → `2023-05-15T19:23:11Z`.
+- **Multiple observations:** one photo with two identified species → one row in `media.csv` and two rows in `observations.csv`.
+- **Observation classification:** Blank → `blank`; Human → `human` (Homo sapiens); Vehicle → `vehicle`; Unknown → `unknown`; species name → `animal` (Genus species).
+
+---
+
+## Project structure
+
+```
+Modulo2_WI2CamtrapDP/
+├── app.py                      # Main application (GUI) — entry point
+├── camtrapdp/                  # Core package
+│   ├── config.py               # Default configuration
+│   ├── processor.py            # WI → Camtrap DP transformation engine
+│   ├── utils.py                # Utilities (dates, MIME, text cleanup)
+│   ├── validator.py            # Frictionless validation
+│   └── schemas/                # Camtrap DP v1.0 JSON schemas (TDWG)
+├── ui/camtrapdp.ui             # Qt Designer interface
+├── assets/                     # Icons and institutional logo
+├── camtrapdp.spec              # PyInstaller configuration
+├── requirements.txt
+├── GUIA_DESARROLLO.md          # Detailed development guide
+├── CONTRIBUTING.md
+├── THIRD_PARTY_NOTICES.txt
+├── LICENSE
+└── README.md
+```
+
+## Build the executable
+
+```bash
+python -m PyInstaller camtrapdp.spec --clean
+# output: dist/Camtrap DP.exe (standalone, ~95-110 MB)
+```
+
+The `.spec` file already includes the icon, resources and hidden dependencies. The `build/` and `dist/` folders are temporary and excluded from Git.
+
+---
+
+## Third-party components
+
+This module bundles the Camtrap DP 1.0 JSON schemas (TDWG). See
+[`THIRD_PARTY_NOTICES.txt`](THIRD_PARTY_NOTICES.txt) and the repository-level
+[`THIRD_PARTY_NOTICES.txt`](../THIRD_PARTY_NOTICES.txt).
+
+## License
+
+MIT — see [`LICENSE`](LICENSE).
+
+## How to cite
+
+Acevedo, C. C., & Díaz-Pulido, A. (2026). *CamTrapFlow (CTF): an open, reproducible desktop workflow to mobilize camera-trap biodiversity data from Wildlife Insights to GBIF (v1.0)* [Software]. Red OTUS, Alexander von Humboldt Biological Resources Research Institute. https://github.com/PEM-Humboldt/cam-trap-flow
+
+## Authors
+
+**Cristian C. Acevedo** — Lead developer. Bioengineer (Universidad de Antioquia), Data Scientist. ORCID: [0000-0002-7864-0775](https://orcid.org/0000-0002-7864-0775)
+**Angélica Díaz-Pulido** — Co-author and scientific coordinator. Associate Researcher, Center for Socioecological Studies and Global Change, Knowledge Management Directorate, Alexander von Humboldt Biological Resources Research Institute. ORCID: [0000-0003-4166-4084](https://orcid.org/0000-0003-4166-4084)
+
+## References
+
+[Camtrap DP](https://camtrap-dp.tdwg.org/) · [Wildlife Insights](https://www.wildlifeinsights.org/) · [Frictionless](https://framework.frictionlessdata.io/) · [SiB Colombia](https://biodiversidad.co/) · [GBIF](https://www.gbif.org/)
+
+---
+
+<br>
+
+# WI2CamtrapDP — Módulo 2 de CamTrapFlow
+
+**Convierte exportaciones de proyecto de Wildlife Insights en paquetes Camtrap DP (v1.0), listos para GBIF y SiB Colombia**
+
+[English](#wi2camtrapdp--module-2-of-camtrapflow) | **Español**
+
+*Parte de la suite [CamTrapFlow (CTF)](../README.md) · Última actualización: 24 de junio de 2026*
+
+---
+
+## Descripción
+
+WI2CamtrapDP es una aplicación de escritorio que convierte las exportaciones de proyecto de [Wildlife Insights](https://www.wildlifeinsights.org/) al estándar [Camtrap Data Package (Camtrap DP)](https://camtrap-dp.tdwg.org/), versión 1.0, para publicación científica y análisis estandarizado de datos de fototrampeo. Es la etapa de estandarización del flujo de CamTrapFlow.
+
+### Características
+
+- Conversión automatizada de proyectos de Wildlife Insights a Camtrap DP.
+- Validación integrada con el framework Frictionless (v5.x).
+- Interfaz gráfica intuitiva (PyQt5).
+- Gestión robusta de taxonomía (detección de datos incompletos, identificaciones múltiples).
+- Conversión automática de zonas horarias a ISO-8601 UTC.
+- Empaquetado automático en ZIP con `datapackage.json` + CSVs.
+- Plantilla de correo integrada para solicitar publicación al SiB Colombia.
+- Se distribuye como ejecutable portable (.exe), sin requerir Python.
+
+---
+
+## Requisitos
+
+**Usuarios finales**
+- Windows 10/11 (64 bits). No requiere Python ni dependencias.
+
+**Desarrolladores**
+- Python 3.10+
+- Dependencias: ver [`requirements.txt`](requirements.txt)
+
+---
+
+## Inicio rápido
+
+**Ejecutar la aplicación empaquetada (recomendado)**
+1. Descarga el paquete de la versión de CamTrapFlow: ver el [README principal](../README.md).
+2. Ejecuta `WI2CamtrapDP.exe` (directamente o desde el CamTrapFlow Launcher).
+
+**Ejecutar desde el código fuente**
+```bash
+# desde la carpeta Modulo2_WI2CamtrapDP/
+python -m venv venv
+venv\Scripts\activate            # Windows (en macOS/Linux: source venv/bin/activate)
+pip install -r requirements.txt
+python app.py
+```
+
+---
+
+## Flujo de trabajo
+
+1. **Exportar desde Wildlife Insights:** inicia sesión, selecciona tu **proyecto** (no una iniciativa) y descarga la exportación completa (ZIP con las tablas CSV).
+2. **Abrir WI2CamtrapDP** y seleccionar el ZIP de Wildlife Insights.
+3. **Configurar opciones:** validación Frictionless, empaquetado ZIP, abrir carpeta al terminar y zona horaria (predeterminada `America/Bogota`).
+4. **Procesar** y monitorear el progreso en el log.
+5. **Resultados:**
    ```
    WI2CamtrapDP_{nombre_proyecto}/
    ├── output/
@@ -95,262 +252,109 @@ python app.py
    │   └── datapackage.json
    └── WI2CamtrapDP_{nombre_proyecto}.zip
    ```
-
-6. **Publicar (opcional):**
-   - Haz clic en "Plantilla de Correo"
-   - Copia el texto generado para enviar al SIB Colombia
+6. **Publicar (opcional):** usa la plantilla de correo para contactar al SiB Colombia.
 
 ---
 
-## 📂 Estructura del Proyecto
+## Entrada y salida
 
-```
-WI2CamtrapDP/
-├── app.py                      # Aplicación principal (GUI)
-├── requirements.txt            # Dependencias Python
-├── camtrapdp.spec             # Configuración PyInstaller
-├── .gitignore                 # Exclusiones Git
-├── README.md                  # Este archivo
-├── GUIA_DESARROLLO.md         # Guía detallada para desarrollo local
-├── LICENSE                    # Licencia del proyecto
-├── CONTRIBUTING.md            # Guía de contribución
-├── GITHUB_QUICKSTART.md       # Guía rápida de GitHub
-│
-├── camtrapdp/                 # Paquete principal
-│   ├── __init__.py           # Inicialización del módulo
-│   ├── config.py             # Configuración por defecto
-│   ├── processor.py          # Motor de transformación WI → Camtrap-DP
-│   ├── utils.py              # Utilidades (fechas, MIME, limpieza texto)
-│   ├── validator.py          # Validación con Frictionless
-│   └── schemas/              # Esquemas JSON Camtrap-DP v1.0.2
-│       ├── camtrap-dp-profile.json
-│       ├── deployments-table-schema.json
-│       ├── media-table-schema.json
-│       └── observations-table-schema.json
-│
-├── ui/
-│   └── camtrapdp.ui          # Diseño interfaz Qt Designer
-│
-├── assets/                   # Recursos visuales
-│   ├── app_icon.ico          # Icono de la aplicación
-│   ├── app_icon.png          # Icono PNG
-│   └── logo_humboldt.png     # Logo institucional
-│
-├── build/                    # Archivos temporales de PyInstaller (generado)
-│   └── camtrapdp/           # Análisis y TOC de compilación
-│
-└── dist/                     # Ejecutable distribuible (generado)
-    └── Camtrap DP.exe       # Aplicación standalone
-```
-
-**Nota:** Las carpetas `build/` y `dist/` se generan automáticamente al compilar con PyInstaller y están excluidas del control de versiones (`.gitignore`).
-
----
-
-## 🔧 Compilar Ejecutable
-
-Para generar el archivo `.exe` desde el código fuente:
-
-```bash
-# 1. Instalar PyInstaller (si no está instalado)
-pip install pyinstaller
-
-# 2. Limpiar compilaciones anteriores (recomendado)
-rmdir /s /q build
-rmdir /s /q dist
-
-# 3. Compilar usando el archivo .spec
-python -m PyInstaller camtrapdp.spec --clean
-
-# 4. El ejecutable estará en dist/
-# Windows: dist/Camtrap DP.exe
-```
-
-**Nota:** El archivo `.spec` ya incluye toda la configuración necesaria (icono, recursos, dependencias ocultas).
-
-### Estructura Post-Compilación
-
-Después de compilar, el proyecto contendrá:
-
-```
-WI2CamtrapDP/
-├── build/                 # Archivos temporales de PyInstaller (se puede eliminar)
-│   └── camtrapdp/
-│       ├── Analysis-00.toc
-│       ├── EXE-00.toc
-│       ├── PKG-00.toc
-│       ├── PYZ-00.pyz
-│       ├── warn-camtrapdp.txt
-│       └── xref-camtrapdp.html
-│
-└── dist/                  # Ejecutable listo para distribuir
-    └── Camtrap DP.exe    # ⭐ Aplicación lista para usar (95-110 MB)
-```
-
-**⚠️ Importante:** Solo distribuye el contenido de `dist/`. Las carpetas `build/` son temporales y pueden eliminarse.
-
----
-
-## 📊 Entrada y Salida
-
-### **Entrada: Wildlife Insights Export**
-
-Archivo ZIP con **4 archivos CSV** (exportación de PROYECTO):
+**Entrada — Exportación de Wildlife Insights** (ZIP, exportación de PROYECTO):
 
 | Archivo | Descripción |
-|---------|-------------|
+| --- | --- |
 | `projects.csv` | Metadatos del proyecto (nombre, coordinador, licencias, objetivos) |
 | `cameras.csv` | Información de equipos (fabricante, modelo, serial) |
 | `deployments.csv` | Despliegues espaciotemporales (coordenadas, fechas, ubicaciones) |
 | `images_{id}.csv` | Registros fotográficos + identificaciones taxonómicas |
 
-⚠️ **Importante:** Solo procesa exportaciones de **PROYECTO** (un solo archivo `images_*.csv`). Las exportaciones de INICIATIVA (múltiples archivos `images_*.csv`) no son soportadas.
+> Solo se admiten exportaciones de **PROYECTO** (un único `images_*.csv`). Las de INICIATIVA (múltiples `images_*.csv`) no son soportadas.
 
-### **Salida: Camtrap-DP v1.0.2**
+**Salida — Camtrap DP v1.0** (3 tablas CSV + metadatos JSON):
 
-Paquete estandarizado con **3 tablas CSV + metadatos JSON:**
-
-| Archivo | Descripción | Campos Clave |
-|---------|-------------|--------------|
-| `deployments.csv` | Despliegues de cámaras | deploymentID, locationName, latitude, longitude, deploymentStart/End, cameraModel |
-| `media.csv` | Archivos multimedia | mediaID, deploymentID, captureMethod, timestamp, filePath, fileMediatype |
-| `observations.csv` | Observaciones taxonómicas | observationID, mediaID, scientificName, vernacularName, count, observationType |
-| `datapackage.json` | Metadatos del paquete | Título, descripción, licencias, contribuidores, esquemas de validación |
+| Archivo | Descripción |
+| --- | --- |
+| `deployments.csv` | Despliegues de cámaras (deploymentID, locationName, latitude, longitude, inicio/fin, cameraModel) |
+| `media.csv` | Archivos multimedia (mediaID, deploymentID, captureMethod, timestamp, filePath, fileMediatype) |
+| `observations.csv` | Observaciones taxonómicas (observationID, mediaID, scientificName, vernacularName, count, observationType) |
+| `datapackage.json` | Metadatos del paquete (título, descripción, licencias, contribuidores, esquemas de validación) |
 
 ---
 
-## 🔍 Validaciones Críticas
+## Validaciones clave
 
-La herramienta implementa validaciones para garantizar calidad de datos:
+**Detiene el proceso:** valores `No CV Result` en campos taxonómicos; exportación de INICIATIVA en lugar de PROYECTO; campos requeridos vacíos en `deployments.csv`.
 
-### ❌ **Detención del Proceso:**
-- **"No CV Result"** detectado en campos taxonómicos (`genus`, `species`, `common_name`, `family`, `order`)
-- Exportación de **INICIATIVA** en lugar de **PROYECTO** (múltiples `images_*.csv`)
-- Campos requeridos vacíos en `deployments.csv`
+**Advertencias (el proceso continúa):** campos opcionales vacíos (p. ej. `cameraModel`, `age`, `sex`); coordenadas fuera de rango (se reemplazan por NA); timestamps malformados (se corrigen o descartan).
 
-### ⚠️ **Advertencias (Continúa el Proceso):**
-- Campos opcionales vacíos (e.g., `cameraModel`, `age`, `sex`)
-- Coordenadas fuera de rango (se reemplazan por NA)
-- Timestamps malformados (se corrigen o descartan)
-
-### ✅ **Validación Opcional con Frictionless:**
-- Verifica estructura completa del Data Package
-- Valida tipos de datos y restricciones
-- Genera reporte detallado por recurso/campo/fila
+**Validación opcional Frictionless:** verifica la estructura completa del Data Package, tipos de datos y restricciones, generando un reporte detallado por recurso/campo/fila.
 
 ---
 
-## 🛠️ Transformaciones Principales
+## Transformaciones principales
 
-### 1. **Taxonomía (Wildlife Insights → Darwin Core)**
-```python
-# Entrada WI:
-genus: "Leopardus"
-species: "tigrinus"
-common_name: "Oncilla"
+- **Taxonomía (Wildlife Insights → Darwin Core):** `genus` + `species` → `scientificName`; `common_name` → `vernacularName`.
+- **Fechas (local → ISO-8601 UTC):** p. ej. `2023-05-15 14:23:11` (America/Bogota, GMT-5) → `2023-05-15T19:23:11Z`.
+- **Observaciones múltiples:** una foto con dos especies identificadas → una fila en `media.csv` y dos en `observations.csv`.
+- **Clasificación de observaciones:** Blank → `blank`; Human → `human` (Homo sapiens); Vehicle → `vehicle`; Unknown → `unknown`; nombre de especie → `animal` (Genus species).
 
-# Salida Camtrap-DP:
-scientificName: "Leopardus tigrinus"
-vernacularName: "Oncilla"
-observationType: "animal"
+---
+
+## Estructura del proyecto
+
+```
+Modulo2_WI2CamtrapDP/
+├── app.py                      # Aplicación principal (GUI) — punto de entrada
+├── camtrapdp/                  # Paquete principal
+│   ├── config.py               # Configuración por defecto
+│   ├── processor.py            # Motor de transformación WI → Camtrap DP
+│   ├── utils.py                # Utilidades (fechas, MIME, limpieza de texto)
+│   ├── validator.py            # Validación con Frictionless
+│   └── schemas/                # Esquemas JSON Camtrap DP v1.0 (TDWG)
+├── ui/camtrapdp.ui             # Interfaz Qt Designer
+├── assets/                     # Iconos y logo institucional
+├── camtrapdp.spec              # Configuración PyInstaller
+├── requirements.txt
+├── GUIA_DESARROLLO.md          # Guía detallada de desarrollo
+├── CONTRIBUTING.md
+├── THIRD_PARTY_NOTICES.txt
+├── LICENSE
+└── README.md
 ```
 
-### 2. **Fechas (Local → ISO-8601 UTC)**
-```python
-# Entrada WI (America/Bogota GMT-5):
-timestamp: "2023-05-15 14:23:11"
+## Compilar el ejecutable
 
-# Salida Camtrap-DP:
-timestamp: "2023-05-15T19:23:11Z"  # +5 horas a UTC
+```bash
+python -m PyInstaller camtrapdp.spec --clean
+# salida: dist/Camtrap DP.exe (standalone, ~95-110 MB)
 ```
 
-### 3. **Observaciones Múltiples**
-```python
-# Si una foto tiene 2 especies identificadas:
-# WI: 2 filas con mismo image_id
-# Camtrap-DP: 1 fila en media.csv + 2 filas en observations.csv
-```
-
-### 4. **Clasificación de Observaciones**
-| Valor en `common_name` | `observationType` | `scientificName` |
-|------------------------|-------------------|------------------|
-| "Blank" | blank | blank |
-| "Human" | human | Homo sapiens |
-| "Vehicle" | vehicle | blank |
-| "Unknown" | unknown | blank |
-| "Unclassified" | unclassified | blank |
-| Nombre de especie | animal | Genus species |
+El archivo `.spec` ya incluye el icono, los recursos y las dependencias ocultas. Las carpetas `build/` y `dist/` son temporales y están excluidas de Git.
 
 ---
 
-## 🐛 Solución de Problemas
+## Componentes de terceros
 
-### **Error: "Se encontraron valores 'No CV Result'"**
-**Causa:** Registros sin identificación taxonómica completa en Wildlife Insights.
+Este módulo incluye empaquetados los esquemas JSON de Camtrap DP 1.0 (TDWG). Ver
+[`THIRD_PARTY_NOTICES.txt`](THIRD_PARTY_NOTICES.txt) y el aviso a nivel de
+repositorio [`THIRD_PARTY_NOTICES.txt`](../THIRD_PARTY_NOTICES.txt).
 
-**Solución:**
-1. Revisar los registros listados en el log de errores
-2. Completar identificaciones en Wildlife Insights
-3. Exportar nuevamente el proyecto
-4. Reintentar el procesamiento
+## Licencia
 
-### **Error: "La exportación parece ser de una INICIATIVA"**
-**Causa:** El ZIP contiene múltiples archivos `images_*.csv` (varios proyectos).
+MIT — ver [`LICENSE`](LICENSE).
 
-**Solución:**
-- Exportar cada **proyecto individual** por separado desde Wildlife Insights
-- Procesar cada proyecto de forma independiente
+## Cómo citar
 
-### **Advertencia: "No se encontró información de modelo de cámara"**
-**Causa:** Los campos `make` y `model` están vacíos en `cameras.csv`.
+Acevedo, C. C., & Díaz-Pulido, A. (2026). *CamTrapFlow (CTF): flujo de trabajo de escritorio, abierto y reproducible, para movilizar datos de biodiversidad de fototrampeo desde Wildlife Insights hacia GBIF (v1.0)* [Software]. Red OTUS, Instituto de Investigación de Recursos Biológicos Alexander von Humboldt. https://github.com/PEM-Humboldt/cam-trap-flow
 
-**Solución:**
-- Esta es solo una advertencia; el proceso continúa
-- El campo `cameraModel` se omitirá en `deployments.csv` (es opcional)
+## Autoría
+
+**Cristian C. Acevedo** — Desarrollador principal. Bioingeniero (Universidad de Antioquia), Data Scientist. ORCID: [0000-0002-7864-0775](https://orcid.org/0000-0002-7864-0775)
+**Angélica Díaz-Pulido** — Coautora y coordinadora científica. Investigadora Adjunta, Centro de Estudios Socioecológicos y Cambio Global, Dirección de Conocimiento, Instituto de Investigación de Recursos Biológicos Alexander von Humboldt. ORCID: [0000-0003-4166-4084](https://orcid.org/0000-0003-4166-4084)
+
+## Referencias
+
+[Camtrap DP](https://camtrap-dp.tdwg.org/) · [Wildlife Insights](https://www.wildlifeinsights.org/) · [Frictionless](https://framework.frictionlessdata.io/) · [SiB Colombia](https://biodiversidad.co/) · [GBIF](https://www.gbif.org/)
 
 ---
 
-## 🤝 Contribuciones
-
-Desarrollado por el **Instituto de Investigación de Recursos Biológicos Alexander von Humboldt** en el marco del proyecto de gestión de datos de fototrampeo para la Red OTUS.
-
-## 👥 Autoría
-
-**Desarrollo principal:**  
-Cristian C. Acevedo
-
-**Coordinación científica:**  
-Angélica Diaz-Pulido
-
-**Institución:**  
-Instituto de Investigación de Recursos Biológicos Alexander von Humboldt – Red OTUS
-
-**Proyecto:**  
-Contrato 25-064 
-Desarrollo de Software CamTrapFlow (CTF) y Dashboards
-
-**Año:** 2025
-
----
-## 📚 Cómo Citar
-
-Si utilizas esta herramienta en tu investigación, por favor cítala como:
-
-Acevedo, C. C., & Diaz-Pulido, A. (2025). *CamTrapFlow (CTF) - Suite integrada para el procesamiento, estandarización y análisis de datos de fototrampe (v1.0.0)* [Software]. Red OTUS, Instituto de Investigación de Recursos Biológicos Alexander von Humboldt. https://github.com/PEM-Humboldt/cam-trap-flow
-
----
-
-## 📄 Licencia
-
-Este proyecto está licenciado bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
-
----
-
-## 📚 Referencias
-
-- **Camtrap-DP Standard:** https://camtrap-dp.tdwg.org/
-- **Wildlife Insights:** https://www.wildlifeinsights.org/
-- **Frictionless Framework:** https://framework.frictionlessdata.io/
-- **SIB Colombia:** https://sibcolombia.net/
-- **Instituto Humboldt:** http://www.humboldt.org.co/
-
+*Módulo 2 de la suite CamTrapFlow (CTF) — Instituto de Investigación de Recursos Biológicos Alexander von Humboldt.*
