@@ -1,1 +1,21 @@
-Este proyecto redistribuye FFmpeg (https://ffmpeg.org). Incluye avisos/licencias segun su distribucion.
+THIRD-PARTY NOTICES — Module 1 (Img2WI)
+========================================
+
+Img2WI redistributes and/or depends on the following third-party components,
+each under its own license. See the repository-level THIRD_PARTY_NOTICES.txt
+for the full list and details.
+
+FFmpeg (https://ffmpeg.org)
+- Used for video decoding and frame extraction.
+- Licensed under LGPL v2.1+ or GPL v2+ depending on the build/components.
+- The redistributed binary (app/bin/ffmpeg.exe) must ship with FFmpeg's own
+  license file and a statement of the exact build/version used. Recommended
+  static x64 builds: https://www.gyan.dev/ffmpeg/builds/
+- FFmpeg is NOT relicensed under MIT.
+
+PyQt5 — GPL v3 or commercial (Riverbank). Imposes GPL obligations on the
+distributed binary; review before publishing releases.
+
+wiutils — Apache-2.0 (verify installed version). https://github.com/PEM-Humboldt/wiutils
+
+PyInstaller — GPL v2+ with packaging exception (build tooling only).
