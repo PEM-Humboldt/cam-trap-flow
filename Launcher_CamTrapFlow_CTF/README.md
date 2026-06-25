@@ -1,139 +1,68 @@
 # CamTrapFlow Launcher
 
-**Interfaz Gráfica Unificada de Gestión de Datos de Fototrampeo**
+**Unified graphical interface to run the three CamTrapFlow modules from a single entry point**
 
-![Versión](https://img.shields.io/badge/versión-1.0.0-blue)
-![Python](https://img.shields.io/badge/python-3.8+-green)
-![Licencia](https://img.shields.io/badge/licencia-MIT-orange)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)
+![Part of](https://img.shields.io/badge/part%20of-CamTrapFlow%20v1.0-success.svg)
 
----
+**English** | [Español](#camtrapflow-launcher-1)
 
-## 📋 Descripción
-
-**CamTrapFlow Launcher** es una aplicación de escritorio que centraliza el acceso a tres herramientas especializadas para el procesamiento completo de datos de fototrampeo, desde la extracción de frames de video hasta la publicación de datos estandarizados.
-
-Esta aplicación proporciona un punto de entrada unificado para:
-
-- **Img2WI**: Extracción de frames de video a intervalos definidos para Wildlife Insights
-- **WI2CamtrapDP**: Conversión de exportaciones de Wildlife Insights a formato Camtrap Data Package (v1.0.2)
-- **WIsualization**: Generación de visualizaciones y análisis estadísticos (curvas de acumulación, actividad horaria, presencia/ausencia)
+*Part of the [CamTrapFlow (CTF)](../README.md) suite · Last updated: 24 June 2026*
 
 ---
 
-## ✨ Características Principales
+## Overview
 
-### Interfaz de Usuario
-- 🖥️ **Interfaz moderna y responsive** optimizada para laptops (1366x768+)
-- 🎨 **Diseño profesional** con paleta corporativa basada en Material Design
-- 📊 **Tarjetas informativas** para cada módulo con descripciones claras
-- ⏳ **Diálogos de carga** con feedback visual progresivo y barra de progreso animada
+The CamTrapFlow Launcher is a desktop application that centralizes access to the three tools of the suite, providing a single entry point for the complete camera-trap data workflow:
 
-### Funcionalidad Técnica
-- 🚀 **Lanzamiento independiente** de cada módulo como proceso separado
-- ⚙️ **Configuración externa** vía `config.json` para duraciones y dimensiones
-- 📝 **Logging completo** en `launcher.log` para diagnóstico y troubleshooting
-- 🔧 **Compatible con PyInstaller** (one-file y modo desarrollo)
-- 🗂️ **Gestión robusta de rutas** para recursos empaquetados (_MEIPASS)
+- **Img2WI** — extract frames from video for Wildlife Insights.
+- **WI2CamtrapDP** — convert Wildlife Insights exports to Camtrap DP (v1.0).
+- **WIsualization** — analysis and visualization (accumulation curves, activity, presence/absence).
 
-### Experiencia de Usuario
-- 🎯 **Acceso centralizado** a todas las herramientas desde una única aplicación
-- ⚡ **Lanzamiento rápido** con tiempos configurables por módulo
-- 🔒 **Prevención de lanzamientos múltiples** mediante deshabilitación de botones
-- 📖 **Información contextual** sobre cada herramienta directamente en la interfaz
+### Features
+
+- Centralized access to all tools from one application.
+- Each module launches as an independent process.
+- External configuration via `config.json` (load times and window size).
+- Full logging in `launcher.log` for diagnostics.
+- PyInstaller-compatible (one-file and development modes).
+- Robust resource-path handling for packaged executables.
 
 ---
 
-## 📦 Requisitos
+## Requirements
 
-### Requisitos del Sistema
-- **Sistema Operativo**: Windows 10/11 (optimizado para Windows)
-- **Resolución mínima**: 1000x600 píxeles (recomendado: 1366x768+)
-- **RAM**: 4GB mínimo (8GB recomendado)
+**End users**
+- Windows 10/11 (optimized for Windows)
+- Minimum resolution 1000×600 (1366×768+ recommended)
+- 4 GB RAM minimum (8 GB recommended)
 
-### Requisitos de Python (solo para desarrollo)
-```
-Python 3.8+
-tkinter (incluido en instalaciones estándar de Python)
-```
+**Developers**
+- Python 3.10+ (uses the standard library, including `tkinter`)
 
-### Módulos Ejecutables Requeridos
-El launcher requiere que los siguientes ejecutables estén disponibles en la carpeta `bin/`:
-- `Img2WI.exe`
-- `WI2CamtrapDP.exe`
-- `WIsualization.exe`
+The launcher expects the module executables to be available in a `bin/` folder: `Img2WI.exe`, `WI2CamtrapDP.exe`, `WIsualization.exe`.
 
 ---
 
-## 📁 Estructura de Archivos
+## Getting started
 
-```
-Launcher_CamTrapFlow_CTF/
-│
-├── Lanzador.py              # Script principal del launcher
-├── config.json              # Archivo de configuración (opcional)
-├── launcher.log             # Log de ejecución (generado automáticamente)
-├── README.md                # Este archivo
-│
-├── assets/                  # Recursos gráficos
-│   ├── icon.ico            # Icono de la aplicación
-│   └── logo_humboldt.png   # Logo institucional
-│
-└── bin/                     # Ejecutables de los módulos
-    ├── Img2WI.exe
-    ├── WI2CamtrapDP.exe
-    └── WIsualization.exe
-```
+**Run the packaged application (recommended)**
+1. Download the CamTrapFlow release package: see the [main README](../README.md).
+2. Keep `CamTrapFlow.exe` next to the `assets/` and `bin/` folders (and optional `config.json`).
+3. Double-click `CamTrapFlow.exe`.
 
----
-
-## 🚀 Instalación y Uso
-
-### Opción 1: Ejecutable Portable (Recomendado)
-
-1. **Descargar** el ejecutable `CamTrapFlow.exe` desde la carpeta de releases
-2. **Colocar** el ejecutable en una carpeta junto con:
-   - Carpeta `assets/` (con iconos y logos)
-   - Carpeta `bin/` (con los tres módulos .exe)
-   - `config.json` (opcional, para personalización)
-3. **Ejecutar** `CamTrapFlow.exe`
-
-### Opción 2: Desde Código Fuente
-
-1. **Clonar** o descargar el repositorio:
+**Run from source**
 ```bash
-git clone <repositorio>
-cd Launcher_CamTrapFlow_CTF
-```
-
-2. **Asegurar** que Python 3.8+ esté instalado:
-```bash
-python --version
-```
-
-3. **Ejecutar** el launcher:
-```bash
+# from the Launcher_CamTrapFlow_CTF/ folder
 python Lanzador.py
 ```
 
-### Opción 3: Crear Ejecutable con PyInstaller
-
-```bash
-# Instalar PyInstaller
-pip install pyinstaller
-
-# Crear ejecutable one-file
-pyinstaller CamTrapFlow.spec
-
-# El ejecutable estará en la carpeta dist/
-```
-
 ---
 
-## ⚙️ Configuración
+## Configuration (`config.json`)
 
-### Archivo `config.json`
-
-El launcher acepta un archivo de configuración opcional para personalizar tiempos de carga y dimensiones de ventana:
+Optional file to customize load times and window dimensions:
 
 ```json
 {
@@ -151,233 +80,182 @@ El launcher acepta un archivo de configuración opcional para personalizar tiemp
 }
 ```
 
-#### Parámetros de Configuración
-
-**`durations_ms`**: Tiempo que el diálogo de carga permanece visible (en milisegundos)
-- Ajustar según el tiempo de arranque real de cada módulo
-- Valores muy bajos pueden cerrar el diálogo antes de que la ventana del módulo aparezca
-- Valores muy altos mantienen el diálogo visible innecesariamente
-
-**`window`**: Dimensiones de la ventana del launcher
-- `default_width/height`: Tamaño inicial de la ventana
-- `min_width/height`: Tamaño mínimo permitido al redimensionar
+- `durations_ms`: how long the loading dialog stays visible per module (adjust to each module's real startup time).
+- `window`: initial and minimum window dimensions.
 
 ---
 
-## 📖 Uso de los Módulos
+## Project structure
 
-### 🎬 Módulo 1 - Img2WI
-**Extracción de frames de video**
-
-- Procesa lotes de videos de fototrampeo
-- Extrae imágenes a intervalos configurables
-- Prepara archivos para carga en Wildlife Insights
-- Soporta múltiples formatos de video
-
-### 🧩 Módulo 2 - WI2CamtrapDP
-**Conversión a estándar Camtrap Data Package**
-
-- Convierte exportaciones ZIP de Wildlife Insights
-- Genera archivos Camtrap-DP v1.0.2 estándar
-- Incluye validación con Frictionless Framework
-- Prepara datos para publicación en GBIF/SIB Colombia
-
-### 📊 Módulo 3 - WIsualization
-**Visualizaciones y análisis**
-
-- Genera curvas de acumulación de especies
-- Crea calendarios de muestreo
-- Analiza patrones de actividad horaria
-- Produce mapas de presencia/ausencia
-- Compatible con datos de WI y Camtrap-DP
-
----
-
-## 🔧 Troubleshooting
-
-### El launcher no inicia
-
-**Problema**: Al hacer doble clic no ocurre nada o se cierra inmediatamente
-
-**Soluciones**:
-1. Verificar que las carpetas `assets/` y `bin/` estén en el mismo directorio
-2. Revisar el archivo `launcher.log` para mensajes de error
-3. Ejecutar desde terminal para ver errores en consola:
-   ```bash
-   CamTrapFlow.exe
-   ```
-
-### Módulo no se encuentra
-
-**Problema**: Error "Archivo no encontrado"
-
-**Soluciones**:
-1. Verificar que el ejecutable existe en `bin/`:
-   - `bin/Img2WI.exe`
-   - `bin/WI2CamtrapDP.exe`
-   - `bin/WIsualization.exe`
-2. Verificar permisos de ejecución de los archivos
-3. Revisar rutas en `launcher.log`
-
-### Diálogo de carga permanece mucho tiempo
-
-**Problema**: El diálogo de "Cargando..." no se cierra
-
-**Soluciones**:
-1. Esperar: algunos módulos tardan en cargar (especialmente WIsualization)
-2. Ajustar tiempos en `config.json` si el problema es recurrente
-3. Verificar que el módulo efectivamente se haya abierto (puede estar detrás de otras ventanas)
-
-### Iconos o logos no se muestran
-
-**Problema**: Ventana sin icono o con icono por defecto
-
-**Soluciones**:
-1. Verificar existencia de archivos en `assets/`:
-   - `assets/icon.ico`
-   - `assets/logo_humboldt.png`
-2. Los iconos son opcionales; la funcionalidad no se ve afectada
-3. Revisar `launcher.log` para advertencias sobre recursos faltantes
-
-### Problemas de resolución o interfaz cortada
-
-**Problema**: Texto cortado o botones no visibles
-
-**Soluciones**:
-1. Aumentar tamaño de ventana manualmente
-2. Ajustar `default_width` y `default_height` en `config.json`
-3. Verificar que la resolución de pantalla sea al menos 1000x600
-
----
-
-## 📝 Logging
-
-El launcher genera automáticamente un archivo `launcher.log` con información detallada:
-
-- **INFO**: Eventos importantes (inicio, lanzamiento de módulos)
-- **WARNING**: Recursos faltantes, errores no críticos
-- **ERROR**: Errores críticos que impiden operaciones
-
-Para debug más detallado, editar `Lanzador.py` y cambiar:
-```python
-logging.basicConfig(level=logging.DEBUG)  # Cambiar INFO a DEBUG
+```
+Launcher_CamTrapFlow_CTF/
+├── Lanzador.py               # Main launcher script (entry point)
+├── config.json              # Optional configuration
+├── assets/                  # Icons and institutional logo
+├── CamTrapFlow.spec         # PyInstaller configuration
+└── README.md
 ```
 
----
-
-## 🏗️ Desarrollo y Compilación
-
-### Estructura de Desarrollo
-
-```python
-# Puntos clave del código:
-
-def resource_path(*parts):
-    """Gestión de rutas compatible con PyInstaller"""
-    # Usa _MEIPASS en ejecutables, __file__ en desarrollo
-
-def exe_path(exe_name):
-    """Localización inteligente de ejecutables"""
-    # Busca en _MEIPASS/bin, bin/, o directorio base
-
-def lanzar(exe_name, human_name, module_info):
-    """Lanzamiento de módulos con feedback visual"""
-    # subprocess.Popen para ejecución no bloqueante
-```
-
-### Compilar con PyInstaller
-
-El proyecto incluye un archivo `CamTrapFlow.spec` para compilación:
+## Build the executable
 
 ```bash
-# Opción 1: Usar spec file (recomendado)
 pyinstaller CamTrapFlow.spec
-
-# Opción 2: Comando manual
-pyinstaller --onefile --windowed \
-    --name="CamTrapFlow" \
-    --icon="assets/icon.ico" \
-    --add-data="assets;assets" \
-    --add-data="bin;bin" \
-    --add-data="config.json;." \
-    Lanzador.py
+# output: dist/CamTrapFlow.exe
 ```
 
 ---
 
-## 📚 Dependencias de Terceros
+## Troubleshooting
 
-### Módulos Python Estándar
-- `tkinter` - Interfaz gráfica
-- `subprocess` - Lanzamiento de procesos
-- `logging` - Sistema de logs
-- `json` - Configuración
-- `pathlib` - Gestión de rutas
-- `contextlib` - Context managers
-
-### Bibliotecas de Desarrollo (opcional)
-- `pyinstaller` - Empaquetado de ejecutables
+- **The launcher does not start:** ensure `assets/` and `bin/` are in the same folder; check `launcher.log`; run from a terminal to see console errors.
+- **Module not found:** confirm the executables exist in `bin/` and have execution permissions.
+- **Loading dialog stays too long:** some modules take time to load; adjust the times in `config.json`.
+- **Icons not shown:** verify the files in `assets/`; icons are optional and do not affect functionality.
 
 ---
 
-## 🤝 Contribuciones
+## License
 
-Este proyecto es parte del desarrollo de software para el Instituto Humboldt - Contrato 25_064.
+MIT — see [`LICENSE`](../LICENSE).
 
----
+## How to cite
 
-# 👥 Autoría
+Acevedo, C. C., & Díaz-Pulido, A. (2026). *CamTrapFlow (CTF): an open, reproducible desktop workflow to mobilize camera-trap biodiversity data from Wildlife Insights to GBIF (v1.0)* [Software]. Red OTUS, Alexander von Humboldt Biological Resources Research Institute. https://github.com/PEM-Humboldt/cam-trap-flow
 
-**Desarrollo principal:**  
-Cristian C. Acevedo
+## Authors
 
-**Coordinación científica:**  
-Angélica Diaz-Pulido
-
-**Institución:**  
-Instituto de Investigación de Recursos Biológicos Alexander von Humboldt – Red OTUS
-
-**Proyecto:**  
-Contrato 25-064 
-Desarrollo de Software CamTrapFlow (CTF) y Dashboards
-
-**Año:** 2025
-
----
-## 📚 Cómo Citar
-
-Si utilizas esta herramienta en tu investigación, por favor cítala como:
-
-Acevedo, C. C., & Diaz-Pulido, A. (2025). *CamTrapFlow (CTF) - Suite integrada para el procesamiento, estandarización y análisis de datos de fototrampe (v1.0.0)* [Software]. Red OTUS, Instituto de Investigación de Recursos Biológicos Alexander von Humboldt. https://github.com/PEM-Humboldt/cam-trap-flow
+**Cristian C. Acevedo** — Lead developer. Bioengineer (Universidad de Antioquia), Data Scientist. ORCID: [0000-0002-7864-0775](https://orcid.org/0000-0002-7864-0775)
+**Angélica Díaz-Pulido** — Co-author and scientific coordinator. Associate Researcher, Center for Socioecological Studies and Global Change, Knowledge Management Directorate, Alexander von Humboldt Biological Resources Research Institute. ORCID: [0000-0003-4166-4084](https://orcid.org/0000-0003-4166-4084)
 
 ---
 
-## 📄 Licencia
+<br>
 
-Este proyecto está bajo la licencia especificada en el archivo `LICENSE`.
+# CamTrapFlow Launcher
 
----
+**Interfaz gráfica unificada para ejecutar los tres módulos de CamTrapFlow desde un único punto de acceso**
 
-## 🔗 Referencias
+[English](#camtrapflow-launcher) | **Español**
 
-- **Wildlife Insights**: https://www.wildlifeinsights.org/
-- **Camtrap Data Package**: https://camtrap-dp.tdwg.org/
-- **GBIF**: https://www.gbif.org/
-- **SIB Colombia**: https://biodiversidad.co/
-
+*Parte de la suite [CamTrapFlow (CTF)](../README.md) · Última actualización: 24 de junio de 2026*
 
 ---
 
-## 🔄 Historial de Versiones
+## Descripción
 
-### v1.0.0 (24 de diciembre de 2025)
-- ✨ Lanzamiento inicial
-- 🎨 Interfaz gráfica moderna con diseño responsive
-- 🚀 Soporte para tres módulos: Img2WI, WI2CamtrapDP, WIsualization
-- ⚙️ Sistema de configuración externa
-- 📝 Logging completo
-- 📦 Compatible con PyInstaller
+El CamTrapFlow Launcher es una aplicación de escritorio que centraliza el acceso a las tres herramientas de la suite, ofreciendo un único punto de entrada para el flujo completo de datos de fototrampeo:
+
+- **Img2WI** — extracción de fotogramas de video para Wildlife Insights.
+- **WI2CamtrapDP** — conversión de exportaciones de Wildlife Insights a Camtrap DP (v1.0).
+- **WIsualization** — análisis y visualización (curvas de acumulación, actividad, presencia/ausencia).
+
+### Características
+
+- Acceso centralizado a todas las herramientas desde una sola aplicación.
+- Cada módulo se ejecuta como un proceso independiente.
+- Configuración externa mediante `config.json` (tiempos de carga y tamaño de ventana).
+- Registro completo en `launcher.log` para diagnóstico.
+- Compatible con PyInstaller (modo one-file y desarrollo).
+- Gestión robusta de rutas de recursos para ejecutables empaquetados.
 
 ---
 
-**© 2025 Instituto de Investigación de Recursos Biológicos Alexander von Humboldt**
+## Requisitos
+
+**Usuarios finales**
+- Windows 10/11 (optimizado para Windows)
+- Resolución mínima 1000×600 (recomendado 1366×768+)
+- 4 GB de RAM mínimo (8 GB recomendado)
+
+**Desarrolladores**
+- Python 3.10+ (usa la biblioteca estándar, incluido `tkinter`)
+
+El launcher espera que los ejecutables de los módulos estén disponibles en una carpeta `bin/`: `Img2WI.exe`, `WI2CamtrapDP.exe`, `WIsualization.exe`.
+
+---
+
+## Inicio rápido
+
+**Ejecutar la aplicación empaquetada (recomendado)**
+1. Descarga el paquete de la versión de CamTrapFlow: ver el [README principal](../README.md).
+2. Mantén `CamTrapFlow.exe` junto a las carpetas `assets/` y `bin/` (y el `config.json` opcional).
+3. Haz doble clic en `CamTrapFlow.exe`.
+
+**Ejecutar desde el código fuente**
+```bash
+# desde la carpeta Launcher_CamTrapFlow_CTF/
+python Lanzador.py
+```
+
+---
+
+## Configuración (`config.json`)
+
+Archivo opcional para personalizar tiempos de carga y dimensiones de ventana:
+
+```json
+{
+  "durations_ms": {
+    "Img2WI.exe": 18000,
+    "WI2CamtrapDP.exe": 7000,
+    "WIsualization.exe": 30000
+  },
+  "window": {
+    "default_width": 1200,
+    "default_height": 680,
+    "min_width": 1000,
+    "min_height": 600
+  }
+}
+```
+
+- `durations_ms`: cuánto permanece visible el diálogo de carga por módulo (ajustar al tiempo real de arranque de cada uno).
+- `window`: dimensiones inicial y mínima de la ventana.
+
+---
+
+## Estructura del proyecto
+
+```
+Launcher_CamTrapFlow_CTF/
+├── Lanzador.py               # Script principal del launcher (punto de entrada)
+├── config.json              # Configuración opcional
+├── assets/                  # Iconos y logo institucional
+├── CamTrapFlow.spec         # Configuración PyInstaller
+└── README.md
+```
+
+## Compilar el ejecutable
+
+```bash
+pyinstaller CamTrapFlow.spec
+# salida: dist/CamTrapFlow.exe
+```
+
+---
+
+## Solución de problemas
+
+- **El launcher no inicia:** verifica que `assets/` y `bin/` estén en la misma carpeta; revisa `launcher.log`; ejecútalo desde una terminal para ver errores en consola.
+- **Módulo no encontrado:** confirma que los ejecutables existen en `bin/` y tienen permisos de ejecución.
+- **El diálogo de carga permanece mucho tiempo:** algunos módulos tardan en cargar; ajusta los tiempos en `config.json`.
+- **No se muestran los iconos:** verifica los archivos en `assets/`; los iconos son opcionales y no afectan la funcionalidad.
+
+---
+
+## Licencia
+
+MIT — ver [`LICENSE`](../LICENSE).
+
+## Cómo citar
+
+Acevedo, C. C., & Díaz-Pulido, A. (2026). *CamTrapFlow (CTF): flujo de trabajo de escritorio, abierto y reproducible, para movilizar datos de biodiversidad de fototrampeo desde Wildlife Insights hacia GBIF (v1.0)* [Software]. Red OTUS, Instituto de Investigación de Recursos Biológicos Alexander von Humboldt. https://github.com/PEM-Humboldt/cam-trap-flow
+
+## Autoría
+
+**Cristian C. Acevedo** — Desarrollador principal. Bioingeniero (Universidad de Antioquia), Data Scientist. ORCID: [0000-0002-7864-0775](https://orcid.org/0000-0002-7864-0775)
+**Angélica Díaz-Pulido** — Coautora y coordinadora científica. Investigadora Adjunta, Centro de Estudios Socioecológicos y Cambio Global, Dirección de Conocimiento, Instituto de Investigación de Recursos Biológicos Alexander von Humboldt. ORCID: [0000-0003-4166-4084](https://orcid.org/0000-0003-4166-4084)
+
+---
+
+*Lanzador de la suite CamTrapFlow (CTF) — Instituto de Investigación de Recursos Biológicos Alexander von Humboldt.*
