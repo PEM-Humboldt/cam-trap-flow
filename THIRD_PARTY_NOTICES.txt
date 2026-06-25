@@ -1,0 +1,87 @@
+THIRD-PARTY NOTICES — CamTrapFlow (CTF)
+========================================
+
+CamTrapFlow is licensed under the MIT License (see LICENSE). The packaged
+application and/or the development environment redistribute or depend on the
+third-party components listed below, each under its own license. This file is
+provided for attribution and license-compliance purposes. Where a component is
+redistributed in binary form inside a release, its corresponding license text
+is included with that release.
+
+-------------------------------------------------------------------------------
+FFmpeg
+-------------------------------------------------------------------------------
+- Used by: Module 1 (Img2WI) for video decoding/frame extraction.
+- Project: https://ffmpeg.org
+- License: FFmpeg is licensed under the LGPL v2.1+ or GPL v2+ depending on the
+  specific build and enabled components. The redistributed binary build and its
+  exact license must be stated here. Recommended static x64 builds:
+  https://www.gyan.dev/ffmpeg/builds/
+- Note: when redistributing the FFmpeg binary, include FFmpeg's license file and
+  state the build/version used. Do not relicense FFmpeg under MIT.
+
+-------------------------------------------------------------------------------
+PyQt5 (Qt for Python bindings)
+-------------------------------------------------------------------------------
+- Used by: Launcher and all modules (graphical interface).
+- Project: https://www.riverbankcomputing.com/software/pyqt/
+- License: GPL v3 OR commercial license from Riverbank Computing. Qt itself is
+  LGPL v3 / commercial.
+- Note: distributing an application that links PyQt5 under GPL v3 imposes GPL
+  obligations on the combined binary distribution. Review this before publishing
+  the release; either comply with GPL v3 for the distributed binary or obtain a
+  commercial PyQt license. The MIT license applies to CamTrapFlow's own source
+  code, not to the bundled PyQt/Qt components.
+
+-------------------------------------------------------------------------------
+Frictionless (frictionless-py)
+-------------------------------------------------------------------------------
+- Used by: Module 2 (WI2CamtrapDP) for Camtrap-DP schema validation.
+- Project: https://framework.frictionlessdata.io
+- License: MIT.
+
+-------------------------------------------------------------------------------
+wiutils
+-------------------------------------------------------------------------------
+- Used by: Module 1 (Img2WI) and Wildlife Insights data handling.
+- Project: https://github.com/PEM-Humboldt/wiutils
+- License: Apache-2.0 (verify against the installed version).
+
+-------------------------------------------------------------------------------
+pandas / numpy / python-dateutil / pytz
+-------------------------------------------------------------------------------
+- Used by: Modules 2 and 3 for data processing and date/time handling.
+- Licenses: pandas (BSD-3-Clause), numpy (BSD-3-Clause), python-dateutil
+  (Apache-2.0 / BSD), pytz (MIT).
+
+-------------------------------------------------------------------------------
+matplotlib / scipy
+-------------------------------------------------------------------------------
+- Used by: Module 3 (WIsualization) for plotting and statistics.
+- Licenses: matplotlib (Matplotlib/PSF-based BSD-compatible license),
+  scipy (BSD-3-Clause).
+
+-------------------------------------------------------------------------------
+requests / tatsu
+-------------------------------------------------------------------------------
+- Used by: Module 2 (WI2CamtrapDP) for networking/parsing.
+- Licenses: requests (Apache-2.0), tatsu (BSD-2-Clause).
+
+-------------------------------------------------------------------------------
+PyInstaller
+-------------------------------------------------------------------------------
+- Used by: build tooling to produce the portable executables.
+- License: GPL v2+ with a bootloader/runtime exception that permits packaging
+  proprietary or differently-licensed applications.
+
+-------------------------------------------------------------------------------
+Camtrap Data Package (Camtrap-DP) specification and JSON schemas
+-------------------------------------------------------------------------------
+- Used by: Module 2 (WI2CamtrapDP) — bundled schemas under camtrapdp/schemas/.
+- Project: https://camtrap-dp.tdwg.org
+- License: the Camtrap-DP specification is published by TDWG; verify and state
+  the applicable license/version for the bundled schemas.
+
+NOTE: Versions and exact licenses should be verified against the dependencies
+actually installed/bundled (see each module's requirements.txt) before each
+public release.
