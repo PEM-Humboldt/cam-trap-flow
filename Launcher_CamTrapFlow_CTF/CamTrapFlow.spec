@@ -64,7 +64,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='Launcher_CamTrapFlow',
+    name='CamTrapFlow',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
