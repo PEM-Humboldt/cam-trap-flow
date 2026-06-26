@@ -1,9 +1,3 @@
-<!--
-README principal de CamTrapFlow (CTF) — versión bilingüe (EN/ES).
-Para usar: reemplaza TODO el contenido del README.md de la raíz por este archivo.
-Revisa los marcadores [ENLACE PENDIENTE] antes de publicar.
--->
-
 # CamTrapFlow (CTF)
 
 **An open, reproducible desktop workflow to mobilize camera-trap biodiversity data from Wildlife Insights to GBIF**
@@ -80,8 +74,8 @@ Together, these modules take a monitoring team from raw camera-trap records to a
 ## Getting started
 
 **Run the packaged application (recommended)**
-1. Download the release package: [ENLACE PENDIENTE — GitHub Release v1.0].
-2. Extract the ZIP to a local folder (avoid cloud-synced folders and paths with spaces or special characters).
+1. Go to the [v1.0 release](https://github.com/PEM-Humboldt/cam-trap-flow/releases/tag/v1.0) and download `CamTrapFlow.exe` (full suite) or any individual module (`Img2WI.exe`, `WI2CamtrapDP.exe`, `WIsualization.exe`).
+2. Save it to a local folder (avoid cloud-synced folders and paths with spaces or special characters). The executables are portable — no installation or extraction needed.
 3. Double-click `CamTrapFlow.exe`. If Windows SmartScreen appears, choose *More info → Run anyway*.
 
 **Run from source**
@@ -94,9 +88,7 @@ No cost or account is required to review or operate CamTrapFlow.
 ---
 
 ## Documentation
-
-- User manual (EN/ES): [ENLACE PENDIENTE — manual PDF]
-- Demonstration video (≤ 5 min): [ENLACE PENDIENTE — video]
+- User manual (ES): [CamTrapFlow User Manual v1.0 (PDF)](https://github.com/PEM-Humboldt/cam-trap-flow/releases/download/v1.0/CamTrapFlow_User_Manual_v1.0_ES.pdf)
 - Module documentation: see the table above.
 
 Related standards and platforms: [Camtrap DP](https://camtrap-dp.tdwg.org/) · [Wildlife Insights](https://www.wildlifeinsights.org/) · [GBIF](https://www.gbif.org/) · [SiB Colombia](https://biodiversidad.co/)
@@ -210,8 +202,8 @@ En conjunto, estos módulos llevan a un equipo de monitoreo desde los registros 
 ## Inicio rápido
 
 **Ejecutar la aplicación empaquetada (recomendado)**
-1. Descarga el paquete de la versión: [ENLACE PENDIENTE — Release v1.0 en GitHub].
-2. Extrae el ZIP en una carpeta local (evita carpetas sincronizadas con la nube y rutas con espacios o caracteres especiales).
+1. Entra al [release v1.0](https://github.com/PEM-Humboldt/cam-trap-flow/releases/tag/v1.0) y descarga `CamTrapFlow.exe` (suite completa) o cualquier módulo individual (`Img2WI.exe`, `WI2CamtrapDP.exe`, `WIsualization.exe`).
+2. Guárdalo en una carpeta local (evita carpetas sincronizadas con la nube y rutas con espacios o caracteres especiales). Los ejecutables son portables: no requieren instalación ni descompresión.
 3. Haz doble clic en `CamTrapFlow.exe`. Si aparece Windows SmartScreen, elige *Más información → Ejecutar de todos modos*.
 
 **Ejecutar desde el código fuente**
@@ -224,8 +216,9 @@ No se requiere costo ni cuenta para revisar u operar CamTrapFlow.
 ---
 
 ## Documentación
-
-- Documentación de módulos: ver la tabla anterior.
+## Documentación
+- Manual de usuario (ES): [Manual de usuario CamTrapFlow v1.0 (PDF)](https://github.com/PEM-Humboldt/cam-trap-flow/releases/download/v1.0/CamTrapFlow_User_Manual_v1.0_ES.pdf)
+- Documentación de los módulos: ver la tabla anterior.
 
 Estándares y plataformas relacionados: [Camtrap DP](https://camtrap-dp.tdwg.org/) · [Wildlife Insights](https://www.wildlifeinsights.org/) · [GBIF](https://www.gbif.org/) · [SiB Colombia](https://biodiversidad.co/)
 
